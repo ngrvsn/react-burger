@@ -1,0 +1,32 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+.title {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+.bottom {
+  text-align: center;
+  font-weight: 400;
+}
+
+.orderNumber {
+  font-weight: 400;
+  font-size: 100px;
+  line-height: 100px;
+}
+
+.image {
+  display: block;
+  width: 100px;
+  height: 100px;
+  margin: 50px;
+}

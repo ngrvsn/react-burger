@@ -1,0 +1,48 @@
+.wrapper {
+  flex-wrap: wrap;
+  margin-right: 100px;
+}
+
+.scroller {
+  overflow: hidden;
+  height: 400px;
+  padding: 8px;
+}
+
+.scroller > div {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  height: 100%;
+
+}
+
+.button {
+  margin-left: 15px;
+}
+
+.bottom {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  align-items: flex-end;
+  justify-content: flex-end;
+  margin: 40px;
+  padding: 20px;
+}
+
+.elements > div:first-child {
+  margin-left: 35px;
+}
+
+.elements > div:last-child {
+  margin-left: 35px;
+}
+
+.price {
+  font-weight: 400;
+  font-size: 50px;
+}
+
+.price > span {
+  margin-right: 15px; }
+

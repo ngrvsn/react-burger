@@ -1,0 +1,32 @@
+.header {
+  padding: 16px 0;
+  background-color: #1245;
+}
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+  gap: 50px;
+}
+
+.logo {
+  margin: 0 auto;
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.buttonText {
+  margin-left: 8px;
+}
+
+
