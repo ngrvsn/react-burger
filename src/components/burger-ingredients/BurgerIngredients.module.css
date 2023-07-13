@@ -1,26 +1,23 @@
 .grid {
   display: grid;
-  margin-bottom: 25px;
-  max-width: 560px;
-  margin-left: 40px;
-  
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 50px;
+  margin-left: 20px;
 }
 
 .header {
-  display: flex;
-  width: 100%;
-  flex: 1;
+  display: grid;
+  height: 80px;
   align-items: stretch;
-  max-width: 800px;
-  margin-left: 40px;
-  }
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  text-align: center;
+}
 
 .body {
   overflow: hidden;
   height: 550px;
   padding: 10px 0;
-  max-width: 800px;
-  margin-left: 40px;
 }
 
 .body > div {
@@ -28,15 +25,14 @@
   height: 100%;
 }
 
-.list {
+.title {
   grid-column-start: 1;
   grid-column-end: 3;
-
 }
 
-
-
+ 
 .custom-scroll {
   overflow-y: auto;
-  max-height: 400px; /* Настройте максимальную высоту в соответствии с вашими требованиями */
+  max-height: 400px; 
 }
+ 

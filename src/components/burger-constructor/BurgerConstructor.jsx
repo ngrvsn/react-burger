@@ -1,101 +1,100 @@
-import React, { useState } from 'react';
-import { DragIcon, Button, ConstructorElement, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+// BurgerConstructor.jsx
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
-import PropTypes from 'prop-types';
+import AllPrice from '../all-price/AllPrice';
+import BunBoard from '../bun-board/BunBoard';
+import IngredientsBoard from '../ingredients-board/IngedientsBoard';
+
+import { GET_ORDER_PRICE, UPDATE_ORDERS, loadOrder } from '../../services/actions/order.js';
+import { useModal } from '../../hooks/useModal';
 
 import styles from './BurgerConstructor.module.css';
 
-function BurgerConstructor({ bun, listElements }) {
-  const [isOpen, setIsOpen] = useState(false);
+const BurgerConstructor = () => {
+  const dispatch = useDispatch();
+  const orders = useSelector((state) => state.orders.orders);
+  const boards = useSelector((state) => state.boardList.boards);
+  const ingredientsSelect = useSelector((state) => state.constructorItemsList.constructorItems);
+  const bunSelect = useSelector((state) => state.constructorItemsList.constructorBun);
+  const { isModalOpen, openModal, closeModal } = useModal();
 
-  const openModal = () => {
-    setIsOpen(true);
+
+  const allOrderItems = [...bunSelect, ...ingredientsSelect];
+
+  const idOrder = (arr) => {
+    return arr.reduce((orderId, item) => {
+      orderId.push(item._id);
+      return orderId;
+    }, []);
   };
 
-  const closeModal = () => {
-    setIsOpen(false);
-  };
+  useEffect(() => {
+    dispatch({ type: GET_ORDER_PRICE });
+  }, [dispatch]);
 
-
-  
-  const renderScrollList = () => {
-    return listElements.map((item) => {
-      const { _id, name, price, image } = item;
-      return (
-        
-        <div key={`scroll_${_id}`}>
-          <DragIcon type='primary' />
-          <ConstructorElement
-            text={name}
-            price={price}
-            thumbnail={image}
-          />
-          
-        </div>
-      );
+  useEffect(() => {
+    dispatch({
+      type: UPDATE_ORDERS,
+      payload: [...bunSelect, ...ingredientsSelect],
     });
-  };
+  }, [dispatch, ingredientsSelect, bunSelect]);
 
-  const bunName = `${bun.name} (верх)`;
-  const bunPrice = bun.price;
-  const bunImage = bun.image;
-  const bunKey = `top_${bun._id}`;
+  const clickOpenModal = () => {
+    const orderId = idOrder(allOrderItems);
+    dispatch(loadOrder(orderId));
+    openModal();
+  };
 
   return (
     <section className={styles.wrapper}>
       <section className={styles.elements}>
-        <div className={styles.elementWrapper}>
-          <ConstructorElement
-            key={bunKey}
-            type='top'
-            isLocked={true}
-            text={bunName}
-            price={bunPrice}
-            thumbnail={bunImage}
-          />
-        </div>
-  
+        <BunBoard
+          items={bunSelect}
+          board={boards[0]}
+          type='top'
+          title=' (верх)'
+          classBun={styles.topBun}
+        />
         <div className={styles.scroller}>
-          <div className='custom-scroll'>{renderScrollList()}</div>
+          <div className='custom-scroll'>
+            <IngredientsBoard
+              items={ingredientsSelect}
+              board={boards[1]}
+              classIngredients={styles.choiceIngredients}
+            />
+          </div>
         </div>
-  
-        <div className={styles.elementWrapper}>
-          <ConstructorElement
-            key={`bottom_${bun._id}`}
-            type='bottom'
-            isLocked={true}
-            text={`${bun.name} (низ)`}
-            price={bunPrice}
-            thumbnail={bunImage}
-          />
-        </div>
+        <BunBoard
+          items={bunSelect}
+          board={boards[0]}
+          type='bottom'
+          title=' (низ)'
+          classBun={styles.bottomBun}
+        />
       </section>
-  
       <div className={styles.bottom}>
-        <div className={styles.price}>
-          <span>610</span>
-          <CurrencyIcon type='primary' />
-        </div>
-        <div className={styles.button}>
-          <Button type='primary' onClick={openModal}>
-            Оформить заказ
-          </Button>
-        </div>
+        <AllPrice bun={bunSelect} ingredients={ingredientsSelect} />
+        <Button
+          htmlType='button'
+          type='primary'
+          size='medium'
+          onClick={clickOpenModal}
+          disabled={bunSelect.length === 0}
+        >
+          Оформить заказ
+        </Button>
       </div>
-  
-      {isOpen && (
+      {isModalOpen && (
         <Modal onClose={closeModal}>
-          <OrderDetails />
+          <OrderDetails orderId={orders.number} />
         </Modal>
       )}
     </section>
   );
-}
-
-BurgerConstructor.propTypes = {
-  bun: PropTypes.object.isRequired,
-  listElements: PropTypes.array.isRequired,
 };
 
 export default BurgerConstructor;

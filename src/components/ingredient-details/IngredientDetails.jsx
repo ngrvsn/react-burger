@@ -8,7 +8,7 @@ function IngredientDetails({ item }) {
   return (
     <div>
       <div className={styles.header}>
-        <h2 className={styles.details}>Детали ингредиента</h2>
+        <h2 className={styles.details}></h2>
       </div>
       <img
         className={styles.image}

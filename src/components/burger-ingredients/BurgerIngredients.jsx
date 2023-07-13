@@ -1,115 +1,144 @@
-import React, { useState, useRef, memo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import IngredientDetails from '../ingredient-details/IngredientDetails';
+
 import IngredientItem from '../ingredient-item/IngredientItem';
 import Modal from '../modal/Modal';
-import PropTypes from 'prop-types';
-import ingredientType from '../../utils/types';
+import { useModal } from '../../hooks/useModal';
+import IngredientDetails from '../ingredient-details/IngredientDetails';
+import { loadIngredients } from '../../services/actions/menu';
+import { MODAL_ADD_INGREDIENT, MODAL_DELETE_INGREDIENT } from '../../services/actions/menu';
 
 import styles from './BurgerIngredients.module.css';
 
-const BurgerIngredients = memo(({ ingredients }) => {
-  const [current, setCurrent] = useState('bunRef');
-  const [open, setOpen] = useState(false);
-  const [item, setItem] = useState({});
+const BurgerIngredients = () => {
+  const dispatch = useDispatch();
+  const ingredient = useSelector((state) => state.ingredients.ingredient);
+  const ingredients = useSelector((state) => state.ingredients.ingredients);
+  const ingredientsRequest = useSelector((state) => state.ingredientsRequest);
+  const ingredientsFailed = useSelector((state) => state.ingredientsFailed);
+  const constructorBun = useSelector((state) => state.constructorItemsList.constructorBun);
+  const constructorItems = useSelector((state) => state.constructorItemsList.constructorItems);
+  const { isModalOpen, openModal, closeModal } = useModal();
 
-  const bunRef = useRef(null);
-  const sauceRef = useRef(null);
-  const mainRef = useRef(null);
-
-  const handleOpenModal = (ingredient) => {
-    setItem(ingredient);
-    setOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setOpen(false);
-  };
-
-  const setActiveTab = (value) => {
-    setCurrent(value);
-
-    let ref;
-    if (value === 'bunRef') {
-      ref = bunRef;
-    } else if (value === 'sauceRef') {
-      ref = sauceRef;
-    } else if (value === 'mainRef') {
-      ref = mainRef;
+  const countersItems = useMemo(() => {
+    const itemOrderCounters = constructorItems.reduce((counters, item) => {
+      counters[item._id] = (counters[item._id] || 0) + 1;
+      return counters;
+    }, {});
+  
+    if (constructorBun?.length > 0) {
+      itemOrderCounters[constructorBun[0]._id] = 2;
     }
+  
+    return itemOrderCounters;
+  }, [constructorItems, constructorBun]);
+  
+  useEffect(() => {
+    dispatch(loadIngredients());
+  }, [dispatch]);
 
-    if (ref && ref.current) {
-      ref.current.scrollIntoView({ behavior: 'smooth' });
-    }
+  const [current, setCurrent] = useState('Булки');
+
+  const clickOpenModal = (e) => {
+    dispatch({ type: MODAL_ADD_INGREDIENT, ingredient: e });
+    openModal();
   };
 
-  const bunIngredients = ingredients.filter((item) => item.type === 'bun');
-  const sauceIngredients = ingredients.filter((item) => item.type === 'sauce');
-  const mainIngredients = ingredients.filter((item) => item.type === 'main');
+  const clickCloseModal = (e) => {
+    dispatch({ type: MODAL_DELETE_INGREDIENT });
+    closeModal();
+  };
 
-  const tabsIngredientsArr = [
-    { title: 'Булки', list: bunIngredients },
-    { title: 'Соусы', list: sauceIngredients },
-    { title: 'Начинки', list: mainIngredients },
-  ];
+  const activeTab = (tab) => {
+    setCurrent(tab);
 
-  return (
-    <div>
+    document.querySelector(`[data-title="${tab}"]`).scrollIntoView({
+      behavior: 'smooth',
+      inline: 'start',
+    });
+  };
+
+  const onScrollActiveTab = () => {
+    const observ = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setCurrent(entry.target.title);
+          }
+        });
+      },
+      {
+        root: document.querySelector('.custom-scroll'),
+        threshold: [0.1, 0.5, 1],
+      }
+    );
+    document.querySelectorAll('.custom-scroll > div').forEach((div) => observ.observe(div));
+  };
+
+  const tabLabels = ['Булки', 'Соусы', 'Начинки'];
+
+  const tabsIngredientsSelect = tabLabels.map((label) => {
+    const tabObj = {
+      title: label,
+      list: [],
+    };
+    if (label === 'Булки') {
+      tabObj.list = ingredients.filter((item) => item.type === 'bun');
+    } else if (label === 'Соусы') {
+      tabObj.list = ingredients.filter((item) => item.type === 'sauce');
+    } else {
+      tabObj.list = ingredients.filter((item) => item.type === 'main');
+    }
+    return tabObj;
+  });
+
+  if (ingredientsFailed) {
+    return <p>Ошибка получения данных</p>;
+  } else if (ingredientsRequest) {
+    return <p>Загрузка</p>;
+  } else {
+    return (
       <section>
         <div className={styles.header}>
-          <Tab value="bunRef" active={current === 'bunRef'} onClick={setActiveTab}>
-            Булки
-          </Tab>
-          <Tab value="sauceRef" active={current === 'sauceRef'} onClick={setActiveTab}>
-            Соусы
-          </Tab>
-          <Tab value="mainRef" active={current === 'mainRef'} onClick={setActiveTab}>
-            Начинки
-          </Tab>
+          {tabLabels.map((item) => (
+            <Tab key={item} value={item} active={current === item} onClick={activeTab}>
+              {item}
+            </Tab>
+          ))}
         </div>
         <div className={styles.body}>
-          <div className="custom-scroll">
-            {tabsIngredientsArr.map((item) => (
-              <div className={styles.grid} key={item.title}>
-                <h2
-                  className={styles.list}
-                  ref={
-                    item.title === 'Булки'
-                      ? bunRef
-                      : item.title === 'Соусы'
-                      ? sauceRef
-                      : mainRef
-                  }
-                >
-                  {item.title}
+          <div className="custom-scroll" onScroll={onScrollActiveTab}>
+            {tabsIngredientsSelect.map((wrapItem) => (
+              <div className={styles.grid} key={wrapItem.title} title={wrapItem.title}>
+                <h2 className={styles.title} data-title={wrapItem.title}>
+                  {wrapItem.title}
                 </h2>
-                {item.list.map((ingredient) => (
+                {wrapItem.list.map((item) => (
                   <IngredientItem
-                    key={ingredient._id}
-                    item={ingredient}
-                    text={ingredient.name}
-                    price={ingredient.price}
-                    thumbnail={ingredient.image}
-                    type={ingredient.type}
-                    handleClick={() => handleOpenModal(ingredient)}
+                    id={item._id}
+                    key={item._id}
+                    item={item}
+                    text={item.name}
+                    price={item.price}
+                    thumbnail={item.image}
+                    type={item.type}
+                    handleClick={() => clickOpenModal(item)}
+                    count={countersItems[item._id]}
                   />
                 ))}
               </div>
             ))}
           </div>
         </div>
+        {isModalOpen && (
+          <Modal title="Детали ингредиента" onClose={clickCloseModal}>
+            <IngredientDetails item={ingredient} />
+          </Modal>
+        )}
       </section>
-      {open && (
-        <Modal onClose={handleCloseModal}>
-          <IngredientDetails item={item} />
-        </Modal>
-      )}
-    </div>
-  );
-});
-
-BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(ingredientType).isRequired,
+    );
+  }
 };
 
 export default BurgerIngredients;

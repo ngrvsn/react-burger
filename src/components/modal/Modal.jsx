@@ -1,3 +1,4 @@
+// Modal.jsx
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -27,7 +28,7 @@ const Modal = ({ onClose, children, title }) => {
     return () => {
       window.removeEventListener('keydown', handleEscapeKey);
     };
-  }, []);
+  }, [onClose]);
 
   return ReactDOM.createPortal(
     <div>
@@ -42,9 +43,8 @@ const Modal = ({ onClose, children, title }) => {
       </div>
       <ModalOverlay handleClick={onClose} />
     </div>,
-    modalRoot,
-);
-
+    modalRoot
+  );
 };
 
 Modal.propTypes = {

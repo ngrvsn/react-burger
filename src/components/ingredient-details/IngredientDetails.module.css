@@ -1,14 +1,14 @@
 .parametres {
-    display: flex;
-  justify-content: space-between;
+  display: flex;
+justify-content: space-between;
 }
 
 .column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .details {
-    text-align: center;
-  }
+.details {
+  text-align: center;
+}
