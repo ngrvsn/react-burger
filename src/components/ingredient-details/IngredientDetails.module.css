@@ -12,3 +12,9 @@ justify-content: space-between;
 .details {
   text-align: center;
 }
+
+.div {
+  font-family: 'Iceland';
+  font-style: normal;
+  font-weight: 400;
+}

@@ -7,6 +7,13 @@ export const GET_ORDER_NUMBER = 'GET_ORDER_NUMBER';
 export const GET_ORDER_PRICE = 'GET_ORDER_PRICE';
 export const UPDATE_ORDERS = 'UPDATE_ORDERS';
 
+export const saveOrderNumber = (number) => {
+  return {
+    type: GET_ORDER_NUMBER,
+    number,
+  };
+};
+
 export const loadOrder = (orderData) => async (dispatch) => {
     dispatch({ type: GET_ORDER_REQUEST });
   

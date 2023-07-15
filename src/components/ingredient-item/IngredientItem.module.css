@@ -4,12 +4,17 @@
   align-items: center;
   overflow: hidden;
   cursor: pointer;
+  font-family: 'Iceland', Arial, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  text-decoration: none;
 }
 
 .title {
-  font-weight: 300;
-  font-size: 20px;
   line-height: 20px;
+  font-family: 'JetBrains Mono', Arial, sans-serif;
+  font-weight: 400;
+  font-size: 16px;
 }
 
 .price {

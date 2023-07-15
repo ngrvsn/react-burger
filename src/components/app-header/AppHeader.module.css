@@ -1,6 +1,7 @@
 .header {
   padding: 16px 0;
   background-color: #1245;
+  font-family: 'JetBrains Mono';
 }
 .container {
   display: flex;
@@ -11,6 +12,11 @@
   padding-left: 16px;
   padding-right: 16px;
   gap: 50px;
+
+height: 56px;
+top: 16px;
+left: 320px;
+
 }
 
 .logo {
@@ -23,9 +29,22 @@
   text-decoration: none;
   padding: 10px;
   border-radius: 4px;
+  color: #fff;
 }
+
 
 .buttonText {
   margin-left: 8px;
+  text-decoration: none;
+  color: #8585AD;
 }
 
+.buttonThree {
+  margin-right: 0;
+  margin-left: auto;
+  text-decoration: none;
+}
+
+.buttonTextOne {
+  margin-left: 8px;
+}

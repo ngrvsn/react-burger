@@ -1,4 +1,9 @@
-import { DELETE_ITEMS_CONSTRUCTOR, ADD_ITEMS_CONSTRUCTOR, SORT_ITEMS_CONSTRUCTOR } from '../actions/items-constructor';
+import {
+  DELETE_ITEMS_CONSTRUCTOR,
+  ADD_ITEMS_CONSTRUCTOR,
+  SORT_ITEMS_CONSTRUCTOR,
+  UPDATE_INGREDIENT_COUNT
+} from '../actions/items-constructor';
 
 const initialState = {
   constructorBun: [],
@@ -20,7 +25,7 @@ export const constructorItemsReducer = (state = initialState, action) => {
     case ADD_ITEMS_CONSTRUCTOR: {
       const { constructorBun, constructorItems } = state;
       const newItem = action.payload;
-  
+
       if (newItem.type === 'bun') {
         if (
           constructorBun.length > 0 &&
@@ -28,7 +33,7 @@ export const constructorItemsReducer = (state = initialState, action) => {
         ) {
           return state;
         }
-  
+
         return {
           ...state,
           constructorBun: [newItem],
@@ -43,11 +48,27 @@ export const constructorItemsReducer = (state = initialState, action) => {
     case SORT_ITEMS_CONSTRUCTOR: {
       const { constructorItems } = state;
       const { from, to } = action.payload;
-  
+
       const updatedItems = [...constructorItems];
       const [draggedItem] = updatedItems.splice(from, 1);
       updatedItems.splice(to, 0, draggedItem);
-  
+
+      return {
+        ...state,
+        constructorItems: updatedItems,
+      };
+    }
+    case UPDATE_INGREDIENT_COUNT: {
+      const { constructorItems } = state;
+      const { id, count } = action.payload;
+
+      const updatedItems = constructorItems.map((item) => {
+        if (item.id === id) {
+          return { ...item, count };
+        }
+        return item;
+      });
+
       return {
         ...state,
         constructorItems: updatedItems,

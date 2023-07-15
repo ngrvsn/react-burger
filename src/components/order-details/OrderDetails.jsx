@@ -1,13 +1,14 @@
 import React from 'react';
 import DoneIcon from '../../images/done.svg';
+import PropTypes from 'prop-types';
 
 import styles from './OrderDetails.module.css';
 
-function OrderDetails() {
+function OrderDetails({ orderId }) {
   return (
     <div className={styles.wrapper}>
       <div className={styles.title}>
-        <div className={styles.orderNumber}>034536</div>
+        <div className={styles.orderNumber}>{orderId}</div>
         <div>Идентификатор заказа</div>
       </div>
       <img className={styles.image} src={DoneIcon} alt='done image' />
@@ -18,5 +19,9 @@ function OrderDetails() {
     </div>
   );
 }
+
+OrderDetails.propTypes = {
+  orderId: PropTypes.number,
+};
 
 export default OrderDetails;

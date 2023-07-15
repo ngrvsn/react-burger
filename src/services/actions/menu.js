@@ -7,13 +7,13 @@ export const MODAL_ADD_INGREDIENT = 'MODAL_ADD_INGREDIENT';
 export const MODAL_DELETE_INGREDIENT = 'MODAL_DELETE_INGREDIENT';
 
 export function loadIngredients() {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({
       type: GET_INGREDIENTS_REQUEST,
     });
-    generalRequest('ingredients')
-      .then(res => {
-        if (res && res.success) {
+    generalRequest("ingredients")
+      .then((res) => {
+        if (res.success) {
           dispatch({
             type: GET_INGREDIENTS_SUCCESS,
             ingredients: res.data,
@@ -24,7 +24,7 @@ export function loadIngredients() {
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
         dispatch({
           type: GET_INGREDIENTS_FAILED,

@@ -1,12 +1,13 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
-import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, DragIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import { deleteConstructorItem, sortConstructorItems } from '../../services/actions/items-constructor';
 import styles from './DraggableIngredient.module.css'; 
 
-const DragIngredient = ({ id, item, index, count }) => {
+
+const DraggableIngredient = ({ id, item, index, count }) => {
   const dispatch = useDispatch();
   const ref = useRef(null);
 
@@ -53,18 +54,19 @@ const DragIngredient = ({ id, item, index, count }) => {
         text={item.name}
         price={item.price}
         thumbnail={item.image}
-        count={count}
         handleClose={clickDelete}
+        count={count}
       />
+      {count && <Counter count={count} size='default' extraClass='m-1' />}
     </div>
   );
 };
 
-DragIngredient.propTypes = {
-  item: PropTypes.object.isRequired,
+DraggableIngredient.propTypes = {
   id: PropTypes.string.isRequired,
+  item: PropTypes.object.isRequired,
   index: PropTypes.number.isRequired,
-  count: PropTypes.number.isRequired,
+  count: PropTypes.number,
 };
 
-export default DragIngredient;
+export default DraggableIngredient;

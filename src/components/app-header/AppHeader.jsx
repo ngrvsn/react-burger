@@ -9,7 +9,7 @@ function AppHeader() {
       <div className={styles.container}>
         <a href='#' className={styles.button}>
           <BurgerIcon type='primary' />
-          <span className={styles.buttonText}>Конструктор</span>
+          <span className={styles.buttonTextOne}>Конструктор</span>
         </a>
 
         <a href='#' className={styles.ButtonTwo}>
@@ -21,7 +21,7 @@ function AppHeader() {
           <Logo />
         </div>
 
-        <a href='#' className={styles.ButtonThree}>
+        <a href='#' className={styles.buttonThree}>
           <ProfileIcon type='secondary' />
           <span className={styles.buttonText}>Личный кабинет</span>
         </a>

@@ -5,6 +5,7 @@ const initialState = {
   orderPrice: 0,
   orderRequest: false,
   orderFailed: false,
+  orderNumber: null 
 };
 
 export const orderReducer = (state = initialState, action) => {
@@ -49,3 +50,4 @@ export const orderReducer = (state = initialState, action) => {
     }
   }
 };
+
