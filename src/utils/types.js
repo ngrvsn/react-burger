@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+export const RESET_CONSTRUCTOR_ITEMS = 'RESET_CONSTRUCTOR_ITEMS';
+
 
 const ingredientType = PropTypes.shape({
   _id: PropTypes.string.isRequired,
@@ -11,5 +13,7 @@ const ingredientType = PropTypes.shape({
   carbohydrates: PropTypes.number.isRequired,
   image_large: PropTypes.string.isRequired
 });
+
+
 
 export default ingredientType;

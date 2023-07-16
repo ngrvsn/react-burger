@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useDrag } from 'react-dnd';
 
 import IngredientItem from '../ingredient-item/IngredientItem';
 import Modal from '../modal/Modal';
 import { useModal } from '../../hooks/useModal';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
 import { loadIngredients } from '../../services/actions/menu';
+
 import { MODAL_ADD_INGREDIENT, MODAL_DELETE_INGREDIENT } from '../../services/actions/menu';
 
 import styles from './BurgerIngredients.module.css';
@@ -21,22 +23,29 @@ const BurgerIngredients = () => {
   const constructorItems = useSelector((state) => state.constructorItemsList.constructorItems);
   const { isModalOpen, openModal, closeModal } = useModal();
 
-  const countersItems = useMemo(() => {
-    const itemOrderCounters = constructorItems.reduce((counters, item) => {
-      counters[item._id] = (counters[item._id] || 0) + 1;
-      return counters;
-    }, {});
-  
-    if (constructorBun?.length > 0) {
-      itemOrderCounters[constructorBun[0]._id] = 2;
+  const [ingredientsCounters, setIngredientsCounters] = useState({});
+
+  useEffect(() => {
+    const updatedCounters = {};
+    if (constructorBun.length > 0) {
+      updatedCounters[constructorBun[0]._id] = 2;
     }
-  
-    return itemOrderCounters;
+    constructorItems.forEach((item) => {
+      updatedCounters[item._id] = (updatedCounters[item._id] || 0) + 1;
+    });
+    setIngredientsCounters(updatedCounters);
   }, [constructorItems, constructorBun]);
-  
+
   useEffect(() => {
     dispatch(loadIngredients());
   }, [dispatch]);
+
+  const updateIngredientCounter = (ingredientId, count) => {
+    setIngredientsCounters((prevCounters) => ({
+      ...prevCounters,
+      [ingredientId]: count,
+    }));
+  };
 
   const [current, setCurrent] = useState('Булки');
 
@@ -45,7 +54,7 @@ const BurgerIngredients = () => {
     openModal();
   };
 
-  const clickCloseModal = (e) => {
+  const clickCloseModal = () => {
     dispatch({ type: MODAL_DELETE_INGREDIENT });
     closeModal();
   };
@@ -116,15 +125,12 @@ const BurgerIngredients = () => {
                 </h2>
                 {wrapItem.list.map((item) => (
                   <IngredientItem
-                    id={item._id}
                     key={item._id}
                     item={item}
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                    type={item.type}
                     handleClick={() => clickOpenModal(item)}
-                    count={countersItems[item._id]}
+                    id={item._id}
+                    count={ingredientsCounters[item._id]}
+                    updateIngredientCounter={updateIngredientCounter}
                   />
                 ))}
               </div>

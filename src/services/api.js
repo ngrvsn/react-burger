@@ -19,3 +19,16 @@ export const generalRequest = async (endpoint, options) => {
   const data = await checkResponse(response);
   return checkSuccess(data);
 };
+
+
+export const getIngredientsRequest = () => {
+  const endpoint = '/ingredients';
+  const options = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  return generalRequest(endpoint, options);
+};

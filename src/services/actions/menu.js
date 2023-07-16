@@ -32,3 +32,12 @@ export function loadIngredients() {
       });
   };
 }
+
+
+
+export const UPDATE_INGREDIENT_COUNT = 'UPDATE_INGREDIENT_COUNT';
+
+export const updateIngredientCount = (ingredientId, count) => ({
+  type: UPDATE_INGREDIENT_COUNT,
+  payload: { ingredientId, count },
+});

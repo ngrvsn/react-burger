@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ingredientType from '../../utils/types';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -6,16 +6,24 @@ import { useDrag } from 'react-dnd';
 
 import styles from './IngredientItem.module.css';
 
-const IngredientItem = ({ item, handleClick }) => {
-  const [count, setCount] = useState(0);
+const IngredientItem = ({ item, handleClick, count, updateIngredientCounter }) => {
+  const [localCount, setLocalCount] = useState(0);
+
+  useEffect(() => {
+    setLocalCount(count);
+  }, [count]);
 
   const handleIncrement = () => {
-    setCount(count + 1);
+    const newCount = localCount + 1;
+    setLocalCount(newCount);
+    updateIngredientCounter(item._id, newCount);
   };
 
   const handleDecrement = () => {
-    if (count > 0) {
-      setCount(count - 1);
+    if (localCount > 0) {
+      const newCount = localCount - 1;
+      setLocalCount(newCount);
+      updateIngredientCounter(item._id, newCount);
     }
   };
 
@@ -40,9 +48,11 @@ const IngredientItem = ({ item, handleClick }) => {
         ref={dragRef}
         style={{ cursor: 'move' }}
       >
-        {count > 0 && (
-          <Counter count={count} size='default' extraClass='m-1' />
-        )}
+        <div className={styles.counterWrapper}>
+          {localCount > 0 && (
+            <Counter count={localCount} size='default' extraClass={styles.counter} />
+          )}
+        </div>
 
         <img className={styles.image} src={item.image} alt={item.name} />
         <div className={styles.price}>
@@ -58,8 +68,8 @@ const IngredientItem = ({ item, handleClick }) => {
 IngredientItem.propTypes = {
   item: ingredientType,
   handleClick: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired,
-  count: PropTypes.number
+  count: PropTypes.number,
+  updateIngredientCounter: PropTypes.func.isRequired,
 };
 
 export default IngredientItem;

@@ -6,9 +6,18 @@ import { rootReducer } from './reducers';
 const composeEnhancers = composeWithDevTools({ trace: true });
 
 export const initStore = () => {
+  const initialState = {
+    burgerConstructor: {
+      buns: {},
+      ingredients: {},
+    },
+  };
+
   const store = createStore(
     rootReducer,
-    composeEnhancers(applyMiddleware(thunk)),
+    initialState,
+    composeEnhancers(applyMiddleware(thunk))
   );
+
   return store;
 };
