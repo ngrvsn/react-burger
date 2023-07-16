@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -21,6 +21,7 @@ const BurgerConstructor = () => {
   const bunSelect = useSelector((state) => state.constructorItemsList.constructorBun);
   const { isModalOpen, openModal, closeModal } = useModal();
 
+  const [isLoading, setIsLoading] = useState(false);
 
   const allOrderItems = [...bunSelect, ...ingredientsSelect];
 
@@ -42,9 +43,15 @@ const BurgerConstructor = () => {
     });
   }, [dispatch, ingredientsSelect, bunSelect]);
 
-  const clickOpenModal = () => {
+  const clickOpenModal = async () => {
     const orderId = idOrder(allOrderItems);
-    dispatch(loadOrder(orderId));
+    setIsLoading(true);
+    try {
+      await dispatch(loadOrder(orderId));
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
+    }
     openModal();
   };
 
@@ -86,6 +93,7 @@ const BurgerConstructor = () => {
         >
           Оформить заказ
         </Button>
+        {isLoading && <p>Загрузка...</p>} 
       </div>
       {isModalOpen && (
         <Modal onClose={closeModal}>
