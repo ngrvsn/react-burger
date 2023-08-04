@@ -1,33 +1,54 @@
-import React from 'react';
-import { BurgerIcon, ListIcon, Logo, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import {
+  Logo,
+  BurgerIcon,
+  ListIcon,
+  ProfileIcon,
+} from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './AppHeader.module.css';
 
-function AppHeader() {
+const AppHeader = () => {
+
+  const location = useLocation();
+
+  const setActiveLink = ({ isActive, isNoActive }) => {
+    if (isActive) {
+      return styles.active;
+    } else {
+      return styles.noActive;
+    }
+
+  };
+
   return (
-    <header className={styles.header}>
-      <div className={styles.container}>
-        <a href='#' className={styles.button}>
-          <BurgerIcon type='primary' />
-          <span className={styles.buttonTextOne}>Конструктор</span>
-        </a>
+    <div>
+      <header className={styles.header}>
+        <div className={styles.container}>
+          <NavLink to='/' className={setActiveLink}>
+            <BurgerIcon type='primary' />
+            <span className={styles.linkText}>Конструктор</span>
+          </NavLink>
 
-        <a href='#' className={styles.ButtonTwo}>
-          <ListIcon type='secondary' />
-          <span className={styles.buttonText}>Лента заказов</span>
-        </a>
+          <NavLink to='/profile/orders' className={setActiveLink}>
+            <ListIcon type='secondary' />
+            <span className={styles.linkText}>Лента заказов</span>
+          </NavLink>
 
-        <div className={styles.logo}>
-          <Logo />
+          <div className={styles.logo}>
+            <Logo />
+          </div>
+
+          <NavLink to='/profile' className={setActiveLink}>
+            <ProfileIcon type='primary' />
+
+          </NavLink>
         </div>
-
-        <a href='#' className={styles.buttonThree}>
-          <ProfileIcon type='secondary' />
-          <span className={styles.buttonText}>Личный кабинет</span>
-        </a>
-      </div>
-    </header>
+      </header>
+      <Outlet />
+    </div>
   );
-}
+};
 
-export default AppHeader;
+export { AppHeader };

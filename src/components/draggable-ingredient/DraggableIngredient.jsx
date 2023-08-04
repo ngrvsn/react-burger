@@ -1,72 +1,79 @@
-import React, { useRef } from 'react';
-import PropTypes from 'prop-types';
-import { ConstructorElement, DragIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch } from 'react-redux';
+import React, { useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { deleteConstructorItem, sortConstructorItems } from '../../services/actions/items-constructor';
-import styles from './DraggableIngredient.module.css'; 
+import { ingredientType } from '../../utils/types.js';
+import PropTypes from 'prop-types';
+import { Counter, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-
-const DraggableIngredient = ({ id, item, index, count }) => {
-  const dispatch = useDispatch();
+const DraggableItem = ({ children, item, dragItem, isSortable, updateIngredientCounter }) => {
   const ref = useRef(null);
+  const [isHover, setIsHover] = useState(false);
+  const [count, setCount] = useState(item.count || 0);
 
-  const clickDelete = () => {
-    dispatch(deleteConstructorItem(index));
+  const [{ isDragging }, drag] = useDrag(
+    () => ({
+      type: isSortable ? 'sort' : item.type,
+      item: () => item,
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
+    }),
+    [item, isSortable],
+  );
+
+  const [, drop] = useDrop(
+    () => ({
+      accept: isSortable ? 'sort' : item.type,
+      collect: (monitor) => ({
+        isHover: monitor.isOver(),
+      }),
+      drop: (draggedItem, monitor) => {
+        if (isSortable && draggedItem.item.id !== item.id && monitor.isOver({ shallow: true })) {
+          dragItem(draggedItem.item.id, item.id);
+        }
+      },
+    }),
+    [isSortable, dragItem],
+  );
+
+  drag(drop(ref));
+
+  const opacity = isDragging ? 0.3 : 1;
+  const filter = isHover ? '2px solid' : 'none';
+
+  const handleIncrement = () => {
+    const updatedCount = count + 1;
+    setCount(updatedCount);
+    updateIngredientCounter(item.id, updatedCount);
   };
 
-  const handleSort = (fromIndex, toIndex) => {
-    return (dispatch) => {
-      dispatch(sortConstructorItems(fromIndex, toIndex));
-    };
+  const handleDecrement = () => {
+    if (count > 0) {
+      const updatedCount = count - 1;
+      setCount(updatedCount);
+      updateIngredientCounter(item.id, updatedCount); 
+    }
   };
-
-  const [, dragRef] = useDrag({
-    type: 'sortItems',
-    item: { index },
-  });
-
-  const [, dropRef] = useDrop({
-    accept: 'sortItems',
-    hover(item) {
-      const dragIndex = item.index;
-      const hoverIndex = index;
-
-      if (dragIndex === hoverIndex) {
-        return;
-      }
-
-      setTimeout(() => {
-        dispatch(handleSort(dragIndex, hoverIndex));
-      }, 0);
-
-      item.index = hoverIndex;
-    },
-  });
-
-  dragRef(dropRef(ref));
 
   return (
-    <div ref={ref} className={styles.drag} style={{ cursor: 'move' }} id={id}>
-      <DragIcon type='primary' />
-      <ConstructorElement
-        index={index}
-        text={item.name}
-        price={item.price}
-        thumbnail={item.image}
-        handleClose={clickDelete}
-        count={count}
-      />
-      {count && <Counter count={count} size='default' extraClass='m-1' />}
+    <div
+      ref={ref}
+      style={{ opacity, filter }}
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+    >
+
+      {children}
     </div>
   );
 };
 
-DraggableIngredient.propTypes = {
-  id: PropTypes.string.isRequired,
-  item: PropTypes.object.isRequired,
-  index: PropTypes.number.isRequired,
+DraggableItem.propTypes = {
+  children: PropTypes.node.isRequired,
+  item: ingredientType.isRequired,
+  dragItem: PropTypes.func,
+  isSortable: PropTypes.bool,
   count: PropTypes.number,
+  updateIngredientCounter: PropTypes.func 
 };
 
-export default DraggableIngredient;
+export default DraggableItem;

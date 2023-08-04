@@ -1,41 +1,79 @@
-.grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  margin-bottom: 50px;
-  margin-left: 20px;
+.tabs {
+  display: flex;
+  gap: 5px;
+  font-family: 'JetBrains Mono';
+}
+
+.tabTitle {
+  padding-right: 20px;
+  font-family: 'JetBrains Mono';
+}
+
+.custom-scroll {
+  max-height: 496px;
+  overflow-y: auto;
+}
+
+.sectionWrap {
+  padding: 20px;
+
+}
+
+.headerSection {
+  display: flex;
+ 
+  align-items: center;
+  margin-bottom: 40px;
 }
 
 .header {
-  display: grid;
-  height: 80px;
-  align-items: stretch;
-  grid-template-columns: repeat(3, 1fr);
+  font-size: 24px;
+  line-height: 30px;
+  font-family: 'JetBrains Mono';
+}
+
+.scroller {
+  overflow-y: auto;
+  max-height: 500px; 
+}
+
+.ingredientsWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-family: 'JetBrains Mono';
+}
+
+
+
+.ingredient {
+
+  display: flex;
+  flex-direction: column;
   align-items: center;
   text-align: center;
+  gap: 10px;
+
 }
 
-.body {
-  overflow: hidden;
-  height: 550px;
-  padding: 10px 0;
+.link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 5px;
+  margin-bottom: 20px;
+  position: relative
+
+
 }
 
-.body > div {
-  overflow: auto;
-  height: 100%;
-}
 
-.title {
-  grid-column-start: 1;
-  grid-column-end: 3;
-  font-family: 'JetBrains Mono';
-  font-weight: 700;
-  font-size: 24px;
+.ingredientTitle {
+  text-align: center;
+  font-family: 'Iceland';
+  font-style: normal;
+  text-align: center;
 }
-
- 
-.custom-scroll {
-  overflow-y: auto;
-  max-height: 400px; 
-}
- 

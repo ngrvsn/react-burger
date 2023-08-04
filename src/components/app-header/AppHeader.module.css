@@ -48,3 +48,11 @@ left: 320px;
 .buttonTextOne {
   margin-left: 8px;
 }
+
+.active {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #fff;
+}
+

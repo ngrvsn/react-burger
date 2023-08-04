@@ -1,0 +1,11 @@
+.main {
+  display: flex;
+  box-sizing: border-box;
+  margin-top: 20px;
+  font-family: 'JetBrains Mono';
+}
+
+
+.inputs {
+  margin-left: 200px;
+}
