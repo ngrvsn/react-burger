@@ -10,6 +10,13 @@ const checkResponse = async (res) => {
   }
 };
 
+const checkSuccess = (res) => {
+  if (res && res.success) {
+    return res;
+  }
+  throw new Error(`ошибка: ${res}`);
+};
+
 export const request = async (endpoint, options) => {
   try {
     const response = await fetch(`${API_DOMAIN}/api/${endpoint}`, options);

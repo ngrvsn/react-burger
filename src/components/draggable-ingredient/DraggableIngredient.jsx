@@ -2,7 +2,6 @@ import React, { useRef, useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { ingredientType } from '../../utils/types.js';
 import PropTypes from 'prop-types';
-import { Counter, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 const DraggableItem = ({ children, item, dragItem, isSortable, updateIngredientCounter }) => {
   const ref = useRef(null);

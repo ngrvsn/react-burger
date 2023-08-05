@@ -1,11 +1,6 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { BrowserRouter, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+
+import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import { AppHeader } from '../app-header/AppHeader';
-import BurgerConstructor from '../burger-constructor/BurgerConstructor';
-import BurgerIngredients from '../burger-ingredients/BurgerIngredients';
 import { HomePage } from '../../pages/home/home';
 import { IngredientsPage } from '../../pages/ingredients/ingredients';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
@@ -34,13 +29,13 @@ const App = () => {
       <Routes location={state?.backgroundLocation || location}>
 
         <Route path="/register" element={<ProtectedRouteElement element={<RegisterPage />} 
-          noNeedAuth={true} />} />
+          noNeedAuth  />} />
         <Route path="/login" element={<ProtectedRouteElement element={<LoginPage />} 
-          noNeedAuth={true} />} />
+          noNeedAuth  />} />
         <Route path="/forgot-password" element={<ProtectedRouteElement element={<ForgotPasswordPage />} 
-          noNeedAuth={true} />} />
+          noNeedAuth  />} />
         <Route path="/reset-password" element={<ProtectedRouteElement element={<ResetPasswordPage />} 
-          noNeedAuth={true} />} />
+          noNeedAuth  />} />
 
         <Route path="/" element={<HomePage />} />
         <Route path="/ingredients/:id" element={<IngredientsPage />}>

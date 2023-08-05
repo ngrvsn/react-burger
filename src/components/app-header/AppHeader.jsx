@@ -1,5 +1,4 @@
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { NavLink, Outlet, } from 'react-router-dom';
 import {
   Logo,
   BurgerIcon,
@@ -11,7 +10,6 @@ import styles from './AppHeader.module.css';
 
 const AppHeader = () => {
 
-  const location = useLocation();
 
   const setActiveLink = ({ isActive, isNoActive }) => {
     if (isActive) {

@@ -16,7 +16,8 @@ const BurgerIngredients = () => {
   const ingredientListFailed = useSelector(state => state.ingredients.ingredientListFailed);
   const ingredientListRequest = useSelector(state => state.ingredients.ingredientListRequest);
   const burgerIngredientsList = useSelector(state => state.burgerConstructor.burgerIngredientsList);
-  const { isModalOpen, openModal, closeModal } = useModal();
+  const { isModalOpen } = useModal();
+  const [selectedIngredient, setSelectedIngredient] = useState(null);
 
   const [currentTab, setCurrentTab] = useState("bun");
   const bunRef = createRef();
@@ -104,10 +105,6 @@ const BurgerIngredients = () => {
     }));
   };
 
-  const openIngredientModal = (ingredient) => {
-    setSelectedIngredient(ingredient);
-    openModal();
-  };
 
   return (
     <section className={styles.sectionWrap}>
@@ -146,7 +143,6 @@ const BurgerIngredients = () => {
                   type={ingredient.type}
                   className={styles.ingredient}
                   updateIngredientCounter={updateIngredientCounter}
-                  onClick={() => openIngredientModal(ingredient)} 
                 >
                   <Link
                     className={styles.link}
@@ -173,7 +169,7 @@ const BurgerIngredients = () => {
       )}
 
       {isModalOpen && selectedIngredient && (
-        <Modal  className={styles.ingredientTitle} onClose={clickCloseModal}>
+        <Modal  className={styles.ingredientTitle}>
           <IngredientDetails item={selectedIngredient} />
         </Modal>
       )}
