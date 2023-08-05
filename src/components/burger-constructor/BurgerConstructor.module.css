@@ -34,7 +34,17 @@
 .price {
   font-weight: 400;
   font-size: 50px;
+  margin-left: 300px;
+  
 }
+
+.button {
+  font-weight: 400;
+  font-size: 50px;
+  margin-left: 270px;
+  
+}
+
 
 .price > span {
   margin-right: 15px; }

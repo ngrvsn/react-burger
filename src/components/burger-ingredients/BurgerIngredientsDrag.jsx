@@ -3,10 +3,10 @@ import { useDrag, useDrop } from 'react-dnd';
 import { ingredientType } from '../../utils/types.js';
 import PropTypes from 'prop-types';
 
-const DraggableItem = ({ children, item, dragItem, isSortable, updateIngredientCounter }) => {
+const DraggableItem = ({ children, item, dragItem, isSortable }) => {
   const ref = useRef(null);
   const [isHover, setIsHover] = useState(false);
-  const [count, setCount] = useState(item.count || 0);
+
 
   const [{ isDragging }, drag] = useDrag(
     () => ({
@@ -39,19 +39,6 @@ const DraggableItem = ({ children, item, dragItem, isSortable, updateIngredientC
   const opacity = isDragging ? 0.3 : 1;
   const filter = isHover ? '2px solid' : 'none';
 
-  const handleIncrement = () => {
-    const updatedCount = count + 1;
-    setCount(updatedCount);
-    updateIngredientCounter(item.id, updatedCount);
-  };
-
-  const handleDecrement = () => {
-    if (count > 0) {
-      const updatedCount = count - 1;
-      setCount(updatedCount);
-      updateIngredientCounter(item.id, updatedCount); 
-    }
-  };
 
   return (
     <div

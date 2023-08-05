@@ -5,7 +5,7 @@ import { useDrop } from "react-dnd";
 import { DragIcon, CurrencyIcon, Button, ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
-import DraggableItem from './dragburger';
+import DraggableItem from './BurgerConstructorDrag';
 import { getCookie } from '../../services/cookies';
 import { API_DOMAIN } from '../../services/api-domain';
 import { cancelOrder, getOrder } from '../../services/actions/order';
@@ -178,6 +178,7 @@ const BurgerConstructor = () => {
                     <span className={styles.price}>{AllPrice}</span>
                     <CurrencyIcon type="primary" />
                 </p>
+                <div className={styles.button}>
                 <Button
                     disabled={!(ingredients.length > 0 && bunSelect.length > 0)}
                     onClick={setOrder}
@@ -187,6 +188,7 @@ const BurgerConstructor = () => {
                 >
                     Оформить заказ
                 </Button>
+                </div>
             </section>
 
             {openModal && <Modal onClose={clickCloseModal}>

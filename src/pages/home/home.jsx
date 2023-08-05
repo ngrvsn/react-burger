@@ -1,8 +1,5 @@
-import React from 'react';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DndProvider } from 'react-dnd';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
 import BurgerConstructor from '../../components/burger-constructor/BurgerConstructor';
 import BurgerIngredients from '../../components/burger-ingredients/BurgerIngredients';
 

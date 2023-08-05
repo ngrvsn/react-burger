@@ -3,7 +3,7 @@ import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger
 import { getIngedients } from '../../services/actions/ingredients';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-import DraggableItem from '../draggable-ingredient/DraggableIngredient';
+import DraggableItem from './BurgerIngredientsDrag';
 import styles from './BurgerIngredients.module.css';
 import Modal from '../modal/Modal';
 import { useModal } from '../../hooks/useModal';
@@ -40,7 +40,7 @@ const BurgerIngredients = () => {
       });
     }
   };
-  console.log('burgerIngredientsList:', burgerIngredientsList);
+ 
 
 
 
@@ -96,14 +96,6 @@ const BurgerIngredients = () => {
     });
   }
 
-  const [ingredientsCounters, setIngredientsCounters] = useState({});
-
-  const updateIngredientCounter = (ingredientId, count) => {
-    setIngredientsCounters((prevCounters) => ({
-      ...prevCounters,
-      [ingredientId]: count,
-    }));
-  };
 
 
   return (
@@ -117,7 +109,6 @@ const BurgerIngredients = () => {
               value={label === 'Булки' ? bunRef : label === 'Соусы' ? sauceRef : mainRef}
               active={currentTab === label.toLowerCase()}
               onClick={() => activeTab(label.toLowerCase())}
-              updateIngredientCounter={updateIngredientCounter}
             >
               {label}
             </Tab>
@@ -142,7 +133,6 @@ const BurgerIngredients = () => {
                   item={ingredient}
                   type={ingredient.type}
                   className={styles.ingredient}
-                  updateIngredientCounter={updateIngredientCounter}
                 >
                   <Link
                     className={styles.link}
