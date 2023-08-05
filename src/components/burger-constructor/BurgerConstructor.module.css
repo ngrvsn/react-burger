@@ -1,8 +1,47 @@
-.wrapper {
-  flex-wrap: wrap;
-  margin-right: 100px;
+.section {
+  display: flex;
   flex-direction: column;
-  margin-top: 30px;
+  margin-top: 100px;
+  margin-left: 40px;
+}
+
+
+
+.ingredient {
+
+
+  margin: 10px;
+  
+
+
+}
+
+.custom-scroll {
+  overflow-y: auto; 
+  max-height: 240px; 
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  margin-top: 40px;
+  padding: 10px;
+}
+
+
+.price {
+  font-weight: 400;
+  font-size: 50px;
+}
+
+.price > span {
+  margin-right: 15px; }
+
+  
+.ingredientInside {
+  padding: 4px;
 }
 
 
@@ -14,85 +53,52 @@
 }
 
 
-.scroller > div {
-  display: flex;
-  flex-direction: column;
-  overflow: auto;
-  height: 100%;
+.scroller{
+  overflow-y: auto;
+  max-height: 400px; 
+  height: auto;
 }
-
-
-.button {
-  margin-left: 15px;
-}
-
-.bottom {
-  display: flex;
-  flex-wrap: wrap-reverse;
-  align-items: flex-end;
-  justify-content: flex-end;
-  margin: 40px;
-  padding: 20px;
-
-}
-
-.elements > div:first-child {
-  margin-left: 35px;
-}
-
-
-.elements > div:last-child {
-  margin-left: 35px;
-}
-
-.price {
-  font-weight: 400;
-  font-size: 50px;
-}
-
-.price > span {
-  margin-right: 15px; }
 
 .topBun {
-    display: flex;
-    justify-content: center;
-    box-sizing: border-box;
-    align-items: center;
-    text-align: center;
-    background: rgb(28, 21, 47);
-    padding: 20px;
-    min-height: 100px;
-    border-radius: 40px 40px 20px 20px;
-    font-family: 'JetBrains Mono';
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  align-items: center;
+  text-align: center;
+  background: rgb(28, 21, 47);
+  padding: 20px;
+  min-height: 100px;
+  border-radius: 40px 40px 20px 20px;
+  font-family: 'JetBrains Mono';
 
-  }
+}
 
 .bottomBun {
-    display: flex;
-    justify-content: center;
-    box-sizing: border-box;
-    align-items: center;
-    text-align: center;
-    background: rgb(28, 21, 47);
-    padding: 20px;
-    min-height: 100px;
-    border-radius: 20px 20px 40px 40px;
-    font-family: 'JetBrains Mono';
-  }
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  align-items: center;
+  text-align: center;
+  background: rgb(28, 21, 47);
+  padding: 20px;
+  min-height: 100px;
+  border-radius: 20px 20px 40px 40px;
+  font-family: 'JetBrains Mono';
+}
 
 
 
 .choiceIngredients {
-    display: flex;
-    justify-content: center;
-    box-sizing: border-box;
-    align-items: center;
-    text-align: center;
-    margin: 10px auto auto 25px;
-    padding: 20px;
-    border-radius: 10px;
-    background: rgb(28, 21, 47);
-    min-height: 100px;
-    font-family: 'JetBrains Mono';
-  }
-
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  align-items: center;
+  text-align: center;
+  margin: 10px auto auto 25px;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 10px;
+  background: rgb(28, 21, 47);
+  min-height: 100px;
+  font-family: 'JetBrains Mono';
+}

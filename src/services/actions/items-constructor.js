@@ -8,7 +8,7 @@ export const UPDATE_INGREDIENT_COUNT = 'UPDATE_INGREDIENT_COUNT';
 export function addItemConstructor(item) {
   const newItem = {
     ...item,
-    id: uuid(),
+    id: Date.now(),
   };
 
   return {

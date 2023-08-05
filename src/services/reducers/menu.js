@@ -1,10 +1,10 @@
 import { GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_FAILED, GET_INGREDIENTS_SUCCESS, MODAL_ADD_INGREDIENT, MODAL_DELETE_INGREDIENT } from '../actions/menu';
 
 const initialState = {
+  ingredient: null,
   ingredients: [],
   ingredientsRequest: false,
-  ingredientsFailed: false,
-  ingredient: null,
+  ingredientsFailed: false
 };
 
 export const menuReducer = (state = initialState, action) => {

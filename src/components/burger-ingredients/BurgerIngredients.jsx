@@ -1,79 +1,67 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDrag } from 'react-dnd';
-
-import IngredientItem from '../ingredient-item/IngredientItem';
+import React, { useState, createRef, useEffect } from 'react';
+import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
+import { getIngedients } from '../../services/actions/ingredients';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
+import DraggableItem from '../draggable-ingredient/DraggableIngredient';
+import styles from './BurgerIngredients.module.css';
 import Modal from '../modal/Modal';
 import { useModal } from '../../hooks/useModal';
 import IngredientDetails from '../ingredient-details/IngredientDetails';
-import { loadIngredients } from '../../services/actions/menu';
-
-import { MODAL_ADD_INGREDIENT, MODAL_DELETE_INGREDIENT } from '../../services/actions/menu';
-
-import styles from './BurgerIngredients.module.css';
 
 const BurgerIngredients = () => {
+  const location = useLocation();
   const dispatch = useDispatch();
-  const ingredient = useSelector((state) => state.ingredients.ingredient);
-  const ingredients = useSelector((state) => state.ingredients.ingredients);
-  const ingredientsRequest = useSelector((state) => state.ingredientsRequest);
-  const ingredientsFailed = useSelector((state) => state.ingredientsFailed);
-  const constructorBun = useSelector((state) => state.constructorItemsList.constructorBun);
-  const constructorItems = useSelector((state) => state.constructorItemsList.constructorItems);
+  const ingredientList = useSelector(state => state.ingredients.ingredientList);
+  const ingredientListFailed = useSelector(state => state.ingredients.ingredientListFailed);
+  const ingredientListRequest = useSelector(state => state.ingredients.ingredientListRequest);
+  const burgerIngredientsList = useSelector(state => state.burgerConstructor.burgerIngredientsList);
   const { isModalOpen, openModal, closeModal } = useModal();
 
-  const [ingredientsCounters, setIngredientsCounters] = useState({});
+  const [currentTab, setCurrentTab] = useState("bun");
+  const bunRef = createRef();
+  const sauceRef = createRef();
+  const mainRef = createRef();
+  const tabLabels = ['Булки', 'Соусы', 'Начинки'];
 
   useEffect(() => {
-    const updatedCounters = {};
-    if (constructorBun.length > 0) {
-      updatedCounters[constructorBun[0]._id] = 2;
-    }
-    constructorItems.forEach((item) => {
-      updatedCounters[item._id] = (updatedCounters[item._id] || 0) + 1;
-    });
-    setIngredientsCounters(updatedCounters);
-  }, [constructorItems, constructorBun]);
-
-  useEffect(() => {
-    dispatch(loadIngredients());
+    dispatch(getIngedients());
   }, [dispatch]);
 
-  const updateIngredientCounter = (ingredientId, count) => {
-    setIngredientsCounters((prevCounters) => ({
-      ...prevCounters,
-      [ingredientId]: count,
-    }));
-  };
-
-  const [current, setCurrent] = useState('Булки');
-
-  const clickOpenModal = (e) => {
-    dispatch({ type: MODAL_ADD_INGREDIENT, ingredient: e });
-    openModal();
-  };
-
-  const clickCloseModal = () => {
-    dispatch({ type: MODAL_DELETE_INGREDIENT });
-    closeModal();
-  };
-
   const activeTab = (tab) => {
-    setCurrent(tab);
-
-    document.querySelector(`[data-title="${tab}"]`).scrollIntoView({
-      behavior: 'smooth',
-      inline: 'start',
-    });
+    setCurrentTab(tab);
+  
+    const element = document.querySelector(`[data-title="${tab}"]`);
+    if (element) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        inline: 'start',
+      });
+    }
   };
+  console.log('burgerIngredientsList:', burgerIngredientsList);
+
+
+
+
+  useEffect(() => {
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => activeTab(tab.textContent));
+    });
+    return () => {
+      tabs.forEach((tab) => {
+        tab.removeEventListener('click', () => activeTab(tab.textContent));
+      });
+    };
+  }, []);
 
   const onScrollActiveTab = () => {
     const observ = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            setCurrent(entry.target.title);
+            setCurrentTab(entry.target.title);
           }
         });
       },
@@ -85,66 +73,112 @@ const BurgerIngredients = () => {
     document.querySelectorAll('.custom-scroll > div').forEach((div) => observ.observe(div));
   };
 
-  const tabLabels = ['Булки', 'Соусы', 'Начинки'];
+  useEffect(() => {
+    onScrollActiveTab();
+  }, [currentTab]);
 
-  const tabsIngredientsSelect = tabLabels.map((label) => {
-    const tabObj = {
-      title: label,
-      list: [],
-    };
-    if (label === 'Булки') {
-      tabObj.list = ingredients.filter((item) => item.type === 'bun');
-    } else if (label === 'Соусы') {
-      tabObj.list = ingredients.filter((item) => item.type === 'sauce');
-    } else {
-      tabObj.list = ingredients.filter((item) => item.type === 'main');
-    }
-    return tabObj;
-  });
+  let tabsIngredientsSelect = [];
+  if (ingredientList) {
+    tabsIngredientsSelect = tabLabels.map((label) => {
+      const tabObj = {
+        title: label,
+        list: [],
+      };
+      if (label === 'Булки') {
+        tabObj.list = ingredientList.filter((item) => item.type === 'bun');
+      } else if (label === 'Соусы') {
+        tabObj.list = ingredientList.filter((item) => item.type === 'sauce');
+      } else {
+        tabObj.list = ingredientList.filter((item) => item.type === 'main');
+      }
+      return tabObj;
+    });
+  }
 
-  if (ingredientsFailed) {
-    return <p>Ошибка получения данных</p>;
-  } else if (ingredientsRequest) {
-    return <p>Загрузка</p>;
-  } else {
-    return (
-      <section>
-        <div className={styles.header}>
-          {tabLabels.map((item) => (
-            <Tab key={item} value={item} active={current === item} onClick={activeTab}>
-              {item}
+  const [ingredientsCounters, setIngredientsCounters] = useState({});
+
+  const updateIngredientCounter = (ingredientId, count) => {
+    setIngredientsCounters((prevCounters) => ({
+      ...prevCounters,
+      [ingredientId]: count,
+    }));
+  };
+
+  const openIngredientModal = (ingredient) => {
+    setSelectedIngredient(ingredient);
+    openModal();
+  };
+
+  return (
+    <section className={styles.sectionWrap}>
+      <h2 className={styles.header}>Соберите бургер</h2>
+      <section className={styles.section}>
+        <div className={styles.tabs}>
+          {tabLabels.map((label, index) => (
+            <Tab
+              key={index}
+              value={label === 'Булки' ? bunRef : label === 'Соусы' ? sauceRef : mainRef}
+              active={currentTab === label.toLowerCase()}
+              onClick={() => activeTab(label.toLowerCase())}
+              updateIngredientCounter={updateIngredientCounter}
+            >
+              {label}
             </Tab>
           ))}
         </div>
-        <div className={styles.body}>
-          <div className="custom-scroll" onScroll={onScrollActiveTab}>
-            {tabsIngredientsSelect.map((wrapItem) => (
-              <div className={styles.grid} key={wrapItem.title} title={wrapItem.title}>
-                <h2 className={styles.title} data-title={wrapItem.title}>
-                  {wrapItem.title}
-                </h2>
-                {wrapItem.list.map((item) => (
-                  <IngredientItem
-                    key={item._id}
-                    item={item}
-                    handleClick={() => clickOpenModal(item)}
-                    id={item._id}
-                    count={ingredientsCounters[item._id]}
-                    updateIngredientCounter={updateIngredientCounter}
-                  />
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-        {isModalOpen && (
-          <Modal title="Детали ингредиента" onClose={clickCloseModal}>
-            <IngredientDetails item={ingredient} />
-          </Modal>
-        )}
       </section>
-    );
-  }
-};
+
+      {ingredientListRequest ? (
+        <p className={styles.paragraph}>Загрузка</p>
+      ) : ingredientListFailed ? (
+        <p className={styles.paragraph}>Ошибка получения данных</p>
+      ) : (
+        <section onScroll={onScrollActiveTab} className={`${styles.scroller} custom-scroll`}>
+          {tabsIngredientsSelect.map((tab, index) => (
+            <section key={index} ref={index === 0 ? bunRef : index === 1 ? sauceRef : mainRef} className={styles.ingredientsWrapper} data-title={tab.title}>
+              <p className={styles.tabTitle}>{tab.title}</p>
+
+              {tab.list.map(ingredient => (
+                <DraggableItem
+                  key={ingredient._id}
+                  text={ingredient.name}
+                  item={ingredient}
+                  type={ingredient.type}
+                  className={styles.ingredient}
+                  updateIngredientCounter={updateIngredientCounter}
+                  onClick={() => openIngredientModal(ingredient)} 
+                >
+                  <Link
+                    className={styles.link}
+                    to={`/ingredients/${ingredient._id}`}
+                    state={{ backgroundLocation: location }}
+                  >
+                    <div className={styles.counterWrapper}>
+                    {burgerIngredientsList.filter(item => item._id === ingredient._id).length > 0 && (
+          <Counter count={burgerIngredientsList.filter(item => item._id === ingredient._id).length} size="default" extraClass="m-1" />
+        )}
+                    </div>
+                    <img src={ingredient.image} alt={ingredient.name} />
+                    <p className={styles.ingredientDetail}>
+                      <span className={styles.price}>{ingredient.price}</span>
+                      <CurrencyIcon type="primary" />
+                    </p>
+                    <div className={styles.ingredientName}>{ingredient.name}</div>
+                  </Link>
+                </DraggableItem>
+              ))}
+            </section>
+          ))}
+        </section>
+      )}
+
+      {isModalOpen && selectedIngredient && (
+        <Modal  className={styles.ingredientTitle} onClose={clickCloseModal}>
+          <IngredientDetails item={selectedIngredient} />
+        </Modal>
+      )}
+    </section>
+  );
+}
 
 export default BurgerIngredients;
