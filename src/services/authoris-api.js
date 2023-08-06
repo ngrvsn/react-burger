@@ -62,11 +62,13 @@ const updateRefreshToken = async (endpoint, options) => {
 export const authValid = async (endpoint, options) => {
   try {
     return await request(endpoint, options);
-  } catch (el) {
-    if (el.message === 'jwt expired') {
+  } catch (error) {
+    if (error.message === 'jwt expired') {
       return updateRefreshToken(endpoint, options);
+    } else if (error.message === 'jwt malformed') {
+      return { success: false, message: 'Ошибка авторизации' };
     } else {
-    return { success: false };
+      return { success: false };
     }
   }
 };

@@ -7,15 +7,14 @@ import styles from './profile-buttons.module.css';
 
 const ProfileButtons = () => {
   const dispatch = useDispatch();
-  let navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   const unlogin = async (el) => {
     el.preventDefault();
-    await signOut(dispatch).then((success) => {
-      if (success) {
-        navigate('/login', { replace: true });
-      }
-    })
+    const success = await signOut(dispatch); 
+    if (success) {
+      navigate('/login', { replace: true });
+    }
   }
 
   const navLinkActiveStyle = `${styles.navLink} ${styles.navLinkActive}`;
