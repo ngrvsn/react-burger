@@ -12,9 +12,9 @@ export const ProfilePage = () => {
   const getUserStart = useSelector((state: { [prop: string]: TAuthorisation }) => state.user.getUserStart);
   const getUserError = useSelector((state: { [prop: string]: TAuthorisation }) => state.user.getUserError);
   const dispatch = useDispatch();
-  const [name, setName] = useState<string>('');
-  const [login, setLogin] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [name, setName] = useState('');
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
   const [isFormDirty, setIsFormDirty] = useState(false);
 
   useEffect(() => {

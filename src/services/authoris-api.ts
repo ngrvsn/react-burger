@@ -51,14 +51,15 @@ const checkResponse = async <T>(res: Response): Promise<T> => {
   }
 };
 
-const checkSuccess = <T>(res: T): T => {
-  if (res && (res as any).success) {
-    return res;
+const checkSuccess = <T extends { success: boolean }>(res: unknown): T => {
+  if (typeof res === 'object' && res !== null && 'success' in res && (res as { success: boolean }).success) {
+    return res as T;
   }
-  throw new Error(`ошибка: ${res}`);
+  throw new Error(`ошибка: ${JSON.stringify(res)}`);
 };
 
-export const request = async (endpoint: string, options: TParams): Promise<TApiResponse> => {
+
+export const request = async (endpoint: string, options: RequestInit): Promise<TApiResponse> => {
   try {
     const response = await fetch(`${API_DOMAIN}/api/${endpoint}`, options);
     return await checkResponse(response);
@@ -66,6 +67,7 @@ export const request = async (endpoint: string, options: TParams): Promise<TApiR
     return Promise.reject(error);
   }
 };
+
 
 const updateRefreshToken = async (endpoint: string,options: TParams): Promise<{ success: boolean }> => {
   const refreshToken = localStorage.getItem("refreshToken");
