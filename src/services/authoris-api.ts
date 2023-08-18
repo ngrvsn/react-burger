@@ -52,11 +52,12 @@ const checkResponse = async <T>(res: Response): Promise<T> => {
 };
 
 const checkSuccess = <T extends { success: boolean }>(res: unknown): T => {
-  if (typeof res === 'object' && res !== null && 'success' in res && (res as { success: boolean }).success) {
+  if (typeof res === 'object' && res !== null && 'success' in res && (res as T).success) {
     return res as T;
   }
   throw new Error(`ошибка: ${JSON.stringify(res)}`);
 };
+
 
 
 export const request = async (endpoint: string, options: RequestInit): Promise<TApiResponse> => {
