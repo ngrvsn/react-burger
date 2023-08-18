@@ -51,11 +51,11 @@ const checkResponse = async <T>(res: Response): Promise<T> => {
   }
 };
 
-const checkSuccess = <T extends { success: boolean }>(res: unknown): T => {
-  if (typeof res === 'object' && res !== null && 'success' in res && (res as T).success) {
-    return res as T;
+const checkSuccess = <T extends { success: boolean }>(res: T): T => {
+  if (res.success) {
+    return res;
   }
-  throw new Error(`ошибка: ${JSON.stringify(res)}`);
+  throw new Error(`Ошибка: ${JSON.stringify(res)}`);
 };
 
 
@@ -197,11 +197,16 @@ export const orderRequest = async (idItem: string): Promise<TOrderResponse> => {
   return await authValid('orders', requestOptions);
 };
 
-export const generalRequest = async <T>(endpoint: string, options: RequestInit): Promise<T> => {
-  const response = await fetch(`https://norma.nomoreparties.space/api/${endpoint}`, options);
-  const data = await checkResponse(response);
-  return checkSuccess(data) as T;
+type ResponseWithSuccess = {
+  success: boolean;
 };
+
+export const generalRequest = async <T extends ResponseWithSuccess>(endpoint: string, options: RequestInit): Promise<T> => {
+  const response = await fetch(`https://norma.nomoreparties.space/api/${endpoint}`, options);
+  const data = await checkResponse(response) as T;
+  return checkSuccess<T>(data);
+};
+
 
 export const getUserRequest = (): Promise<Partial<TAuthUser>> => authValid('auth/user', {
   method: "GET",
