@@ -1,39 +1,42 @@
 import React, { useEffect, useState, FC } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { AppDispatch } from '../../utils/types';
 import { useLocation } from 'react-router-dom';
 import { setModalIngredient } from '../../services/actions/modal-item';
-import { getIngedients } from '../../services/actions/ingredients';
-import { TIngredient, TModal, TIngredientProps } from '../../utils/types';
+import { getIngredients } from '../../services/actions/ingredients';
+import {  TIngredientProps, RootState, useSelector, useDispatch } from '../../utils/types';
+import { TIngredientsState } from '../../services/reducers/ingredients';
+import { TIngedientModalState } from '../../services/reducers/modal-item';
 
 import styles from './IngredientDetails.module.css';
 
 const IngredientDetails: FC = ( ) => {
-  const dispatch: Function = useDispatch();
-  const modalIngredient = useSelector((state: { modalItem: TModal }) => state.modalItem.modalIngredient);
-  const ingredientListFailed = useSelector((state: { ingredients: TIngredient }) => state.ingredients.ingredientListFailed);
-  const ingredientListRequest = useSelector((state: { ingredients: TIngredient }) => state.ingredients.ingredientListRequest);
-  const ingredientList = useSelector((state: { ingredients: TIngredient })=> state.ingredients.ingredientList);
+  const dispatch: AppDispatch = useDispatch();
+  const modalIngredient = useSelector((state: { modalItem: TIngedientModalState }) => state.modalItem.modalIngredient);
+  const ingredientListFailed = useSelector((state: { ingredients: TIngredientsState }) => state.ingredients.ingredientListFailed);
+  const ingredientListRequest = useSelector((state: { ingredients: TIngredientsState }) => state.ingredients.ingredientListRequest);
+  const ingredientList = useSelector((state: { ingredients: TIngredientsState })=> state.ingredients.ingredientList);
   const location = useLocation();
   
   const [selectedIngredient, setSelectedIngredient] = useState<TIngredientProps | null>(null);
+
   
-  useEffect(() => {
+  useEffect((): ReturnType<React.EffectCallback> => {
     const fetchIngredientsList = async () => {
       if (!location.state) {
-        await dispatch(getIngedients()); 
+        await dispatch(getIngredients()); 
       }
     };
   
     fetchIngredientsList();
   }, [dispatch, location.state]);
 
-  useEffect(() => {
+  useEffect((): ReturnType<React.EffectCallback> => {
     const setModalIngredientAction = () => {
       if (!ingredientListRequest && !ingredientListFailed && ingredientList?.length) {
         const listId = location.pathname.split('/ingredients/')[1];
         const list = ingredientList.filter(item => item._id === listId);
         if (list.length > 0) {
-          dispatch(setModalIngredient(list[0] as unknown as TIngredient)); 
+          dispatch(setModalIngredient(list[0] as unknown as TIngredientProps)); 
           setSelectedIngredient(list[0]);
         }
       }

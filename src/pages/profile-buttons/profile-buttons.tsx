@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useNavigate, useMatch } from "react-router-dom";
-import { useDispatch} from 'react-redux';
+import { useDispatch } from '../../utils/types';
 import { signOut } from '../../services/actions/users';
 import { FC, FormEvent } from 'react';
 

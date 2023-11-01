@@ -1,7 +1,15 @@
 .main{
     display: flex;
-    flex-direction: column;
+
     font-family: 'JetBrains Mono';
     
   }
+  .buttons {
+    flex: 1; 
+  }
   
+  .feed {
+
+    flex: 2; 
+    display: flex;
+  }

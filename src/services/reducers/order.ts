@@ -1,13 +1,20 @@
-import {GET_ORDER_REQUEST, GET_ORDER_SUCCESS, GET_ORDER_FAILED, GET_ORDER_NUMBER} from '../actions/order';
+import {GET_ORDER_REQUEST, GET_ORDER_SUCCESS, GET_ORDER_FAILED, GET_ORDER_NUMBER,  UPDATE_ORDER} from '../constants/order';
+import { TOrderProps, TOrdersSectionProps } from '../../utils/types';
+import { TOrderAction } from '../actions/order';
 
-const initialState = {
+export type TOrderState = {
+    order?: TOrderProps | null
+    orderRequest: boolean
+    orderFailed: boolean
+    updatedOrder: TOrdersSectionProps | null}
+
+const initialState:TOrderState = {
   order: null,
-  orderNumber: null,
   orderRequest: false,
-  orderFailed: false
-};
+  orderFailed: false,
+  updatedOrder: null}
 
-export const orderReducer = (state = initialState, action) => {
+export const orderReducer = (state = initialState, action: TOrderAction) => {
   switch (action.type) {
       case GET_ORDER_REQUEST: {
           return {
@@ -31,12 +38,15 @@ export const orderReducer = (state = initialState, action) => {
               orderRequest: false,
           };
       }
-      case GET_ORDER_NUMBER: {
+
+    
+    case UPDATE_ORDER: {
         return {
-          ...state,
-          orderNumber: action.orderNumber,
+            ...state,
+            updatedOrder: action.payload,
         };
-      }
+    }
+ 
       default: {
           return state;
       }

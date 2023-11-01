@@ -1,14 +1,26 @@
 import { getIngedientsRequest } from "../authoris-api";
-import { Dispatch } from 'redux';
+import { TIngredientProps, AppDispatch, AppThunkAction } from "../../utils/types";
+import { GET_INGREDIENTS_REQUEST, GET_INGREDIENTS_SUCCESS, GET_INGREDIENTS_FAILED } from "../constants/ingredients";
 
 
-export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
-export const GET_INGREDIENTS_SUCCESS = 'GET_INGREDIENTS_SUCCESS';
-export const GET_INGREDIENTS_FAILED = 'GET_INGREDIENTS_FAILED';
+type TIngredientsRequestAction = {
+    type: typeof GET_INGREDIENTS_REQUEST};
+  
+  type TIngredientsSuccessAction = {
+    type: typeof GET_INGREDIENTS_SUCCESS;
+    payload: TIngredientProps[] };
+  
+  type TIngredientsFailedAction = {
+    type: typeof GET_INGREDIENTS_FAILED};
 
 
-export function getIngedients() {
-    return async function (dispatch: Dispatch) {
+
+export type TIngredientsAction = TIngredientsFailedAction | TIngredientsRequestAction | TIngredientsSuccessAction;
+
+
+
+export function getIngredients():AppThunkAction {
+    return async function (dispatch: AppDispatch) {
         try {
             dispatch({
                 type: GET_INGREDIENTS_REQUEST
@@ -18,7 +30,7 @@ export function getIngedients() {
             console.log(response.data)
             dispatch({
                 type: GET_INGREDIENTS_SUCCESS,
-                payload: response.data
+                payload: response.data || []
             });
         } catch (error: unknown) {
             dispatch({

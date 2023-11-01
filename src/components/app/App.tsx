@@ -11,6 +11,8 @@ import { RegisterPage } from '../../pages/registration/registration';
 import { ForgotPasswordPage } from '../../pages/forgot-password/forgot-password';
 import { ResetPasswordPage } from '../../pages/reset-password/reset-password';
 import { NotFoundPage } from '../../pages/not-found/not-found';
+import { FeedArchive } from '../feed-archive/feed-archive';
+import { FeedInfo } from '../feed-archive/feed-info/feed-info';
 import { ProtectedRouteElement } from '../protected-route/protected-route';
 import Modal from '../modal/Modal';
 import { FC } from 'react';
@@ -42,11 +44,15 @@ const App:FC = () => {
         <Route path="/ingredients/:id" element={<IngredientsPage />}>
         <Route path="" element={<IngredientDetails />} />
         </Route>
+        <Route path="/feed/:id" element={<FeedInfo />} />
+        <Route path="/feed" element={<FeedArchive />} />
+        
 
         <Route path="/profile" element={<ProtectedRouteElement element={<ProfilePage />} 
           noNeedAuth={false} />} />
         <Route path="/profile/orders" element={<ProtectedRouteElement element={<ProfileOrdersPage />} 
           noNeedAuth={false} />} />
+          <Route path="/profile/orders/:id" element={<ProtectedRouteElement element={<FeedInfo />} noNeedAuth={false} />} />
 
         <Route path="*" element={<NotFoundPage />} />
 
@@ -56,6 +62,13 @@ const App:FC = () => {
         <Routes>
           <Route path="/ingredients/:id" element={<Modal onClose={() => { navigate(`/`) }}>
             <IngredientDetails />
+          </Modal>} />
+          <Route path="/feed/:id" element={<Modal onClose={() => { navigate(`/feed`) }}>
+            <FeedInfo />
+          </Modal>} />
+
+          <Route path="/profile/orders/:id" element={<Modal onClose={() => { navigate(`/profile/orders`) }}>
+            <FeedInfo />
           </Modal>} />
         </Routes>
       )}

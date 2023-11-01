@@ -1,21 +1,31 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Button, EmailInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import ProfileButtons from '../profile-buttons/profile-buttons';
 import { editUser, getUser } from '../../services/actions/users';
-import { TAuthorisation } from '../../utils/types';
+import { RootState, useSelector, useDispatch } from '../../utils/types';
+import { useLocation } from 'react-router-dom';
+
+
+
 
 import styles from './profile.module.css';
 
 export const ProfilePage = () => {
-  const user = useSelector((state: { [prop in string]: TAuthorisation }) => state.user.user);
-  const getUserStart = useSelector((state: { [prop: string]: TAuthorisation }) => state.user.getUserStart);
-  const getUserError = useSelector((state: { [prop: string]: TAuthorisation }) => state.user.getUserError);
+  const user = useSelector((state: RootState) => state.user.user);
+  const getUserStart = useSelector((state: RootState) => state.user.getUserStart);
+  const getUserError = useSelector((state: RootState) => state.user.getUserError);
   const dispatch = useDispatch();
   const [name, setName] = useState('');
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [isFormDirty, setIsFormDirty] = useState(false);
+  const location = useLocation();
+    
+  const currentURL = location.pathname;
+  console.log('Текущий URL:', currentURL);
+
+
+  
 
   useEffect(() => {
     getUser(dispatch);

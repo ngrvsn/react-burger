@@ -1,48 +1,68 @@
 import {
-    GET_REGISTER_REQUEST,
-    GET_REGISTER_SUCCESS,
-    GET_REGISTER_FAILED,
-    GET_LOGIN_REQUEST,
-    GET_LOGIN_SUCCESS,
-    GET_LOGIN_FAILED,
-    LOG_OUT_REQUEST,
-    LOG_OUT_SUCCESS,
-    LOG_OUT_FAILED,
-    FORGOT_PASSWORD_REQUEST,
-    FORGOT_PASSWORD_SUCCESS,
-    FORGOT_PASSWORD_FAILED,
-    RESET_PASSWORD_REQUEST,
-    RESET_PASSWORD_SUCCESS,
-    RESET_PASSWORD_FAILED,
-    USER_REQUEST,
-    USER_SUCCESS,
-    USER_FAILED,
-    SET_USER,
-    GET_USER_REQUEST,
-    GET_USER_SUCCESS,
-    GET_USER_FAILED
-  } from '../actions/users';
+  GET_REGISTER_REQUEST,
+  GET_REGISTER_SUCCESS,
+  GET_REGISTER_FAILED,
+  GET_LOGIN_REQUEST,
+  GET_LOGIN_SUCCESS,
+  GET_LOGIN_FAILED,
+  LOG_OUT_REQUEST,
+  LOG_OUT_SUCCESS,
+  LOG_OUT_FAILED,
+  FORGOT_PASSWORD_REQUEST,
+  FORGOT_PASSWORD_SUCCESS,
+  FORGOT_PASSWORD_FAILED,
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAILED,
+  USER_REQUEST,
+  USER_SUCCESS,
+  USER_FAILED,
+  SET_USER,
+  GET_USER_REQUEST,
+  GET_USER_SUCCESS,
+  GET_USER_FAILED
+} from '../constants/users';
+import { TUser } from '../../utils/types';
+import { TUsersAction } from '../actions/users';
+
+export type TUsersState = {
+  user: TUser | null
+  registerStart: boolean
+  registerError: boolean
+  loginStart: boolean
+  loginError: boolean
+  logoutStart: boolean
+  logoutError: boolean
+  forgotPasswordStart: boolean
+  forgotPasswordError: boolean
+  resetPasswordStart: boolean
+  resetPasswordError: boolean
+  getUserStart: boolean
+  getUserError: boolean
+  getUserRequest: boolean
+  getUserSuccess: boolean
+  getUserFailed: boolean}
+
+const initialState: TUsersState = {
+  user: null,
+  registerStart: false,
+  registerError: false,
+  loginStart: false,
+  loginError: false,
+  logoutStart: false,
+  logoutError: false,
+  forgotPasswordStart: false,
+  forgotPasswordError: false,
+  resetPasswordStart: false,
+  resetPasswordError: false,
+  getUserStart: false,
+  getUserError: false,
+  getUserRequest: false,
+  getUserSuccess: false,
+  getUserFailed: false
+};
   
-  const initialState = {
-    user: null,
-    registerStart: false,
-    registerError: false,
-    loginStart: false,
-    loginError: false,
-    logoutStart: false,
-    logoutError: false,
-    forgotPasswordStart: false,
-    forgotPasswordError: false,
-    resetPasswordStart: false,
-    resetPasswordError: false,
-    getUserStart: false,
-    getUserError: false,
-    getUserRequest: false,
-    getUserSuccess: false,
-    getUserFailed: false,
-  };
-  
-  export const userReducer = (state = initialState, action) => {
+  export const userReducer = (state = initialState, action: TUsersAction) => {
     switch (action.type) {
       case GET_REGISTER_REQUEST: {
         return {

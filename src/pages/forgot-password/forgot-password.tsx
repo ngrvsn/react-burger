@@ -1,9 +1,8 @@
 import React, { useState, ChangeEvent, FormEvent, FC } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
 import { EmailInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { forgotPassword } from '../../services/actions/users';
-import { TAuthorisation } from '../../utils/types';
+import { RootState, useSelector, useDispatch } from '../../utils/types';
 
 import styles from './forgot-password.module.css';
 
@@ -11,7 +10,7 @@ export const ForgotPasswordPage: FC = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const rememberPassword = useSelector((state: { [prop: string]: TAuthorisation }) => state.user.forgotPasswordStart);
+  const rememberPassword = useSelector((state: RootState) => state.user.forgotPasswordStart);
   const [email, setEmail] = useState('');
 
   const handleEmailChange = (el: ChangeEvent<HTMLInputElement>): void => setEmail(el.target.value);

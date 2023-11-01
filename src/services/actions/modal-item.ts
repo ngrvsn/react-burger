@@ -1,8 +1,14 @@
-export const MODAL_INGREDIENT = 'MODAL_INGREDIENT';
-export const MODAL_DELETE_INGREDIENT = 'MODAL_DELETE_INGREDIENT';
-import { TIngredient } from "../../utils/types";
+import { MODAL_INGREDIENT, MODAL_DELETE_INGREDIENT } from "../constants/modal-item";
+import { TIngredientProps } from "../../utils/types";
 
-export const setModalIngredient = (item: TIngredient) => ({
+
+export type TModalAction = {
+    type: typeof MODAL_INGREDIENT;
+    payload: TIngredientProps;
+  };
+  
+  export const setModalIngredient = (item: TIngredientProps): TModalAction => ({
     type: MODAL_INGREDIENT,
     payload: item,
-})
+  });
+  

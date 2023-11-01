@@ -1,14 +1,13 @@
 import React, { useState, ChangeEvent, FormEvent, FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { EmailInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { signIn } from '../../services/actions/users';
-import { TAuthorisation } from '../../utils/types';
+import { RootState, useSelector, useDispatch } from '../../utils/types';
 
 import styles from './login.module.css';
 
 export const LoginPage: FC = () => {
-  const loginStart = useSelector((state: { [prop: string]: TAuthorisation }) => state.user.loginStart);
+  const loginStart = useSelector((state: RootState) => state.user.loginStart);
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();

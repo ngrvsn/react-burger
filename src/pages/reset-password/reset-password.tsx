@@ -1,9 +1,8 @@
 import React, { useState, ChangeEvent,  FormEvent, FC } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { resetPassword } from '../../services/actions/users';
-import { TAuthorisation } from '../../utils/types';
+import { RootState, useSelector, useDispatch } from '../../utils/types';
 
 import styles from './reset-password.module.css';
 
@@ -11,7 +10,7 @@ export const ResetPasswordPage: FC = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const resetPasswordStart = useSelector((state: { [prop: string]: TAuthorisation }) => state.user.resetPasswordStart);
+  const resetPasswordStart = useSelector((state: RootState) => state.user.resetPasswordStart);
   const { state } = location;
   const [password, setPassword] = useState<string>('');
   const [code, setCode] = useState<string>('');

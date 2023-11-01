@@ -1,8 +1,9 @@
 import React, { useState, ChangeEvent, FormEvent, FC  } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../utils/types';
 import { EmailInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { register } from '../../services/actions/users';
+
 
 
 import styles from './registration.module.css';

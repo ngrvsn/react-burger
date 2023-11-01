@@ -1,5 +1,4 @@
 import React, { useState, useMemo, FC } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useDrop } from 'react-dnd';
 import {
@@ -16,46 +15,73 @@ import { API_DOMAIN } from '../../services/api-domain';
 import { cancelOrder } from '../../services/actions/order';
 import { setBurgerIngredientsList } from '../../services/actions/ingredient-list';
 import axios from 'axios';
-import { TIngredient, TBurgerIngredient, TIngredientProps } from '../../utils/types';
+import { updateRefreshToken } from '../../services/authoris-api';
+import { createOrderWithTokenRefresh } from '../../services/authoris-api';
+import {
+  TBurgerIngredient,
+  TIngredientProps,
+  RootState,
+  useDispatch,
+  useSelector,
+} from '../../utils/types';
 
 import styles from './BurgerConstructor.module.css';
 
 const BurgerConstructor: FC = () => {
   const dispatch: Function = useDispatch();
   const navigate = useNavigate();
-  const ingredients = useSelector((state: { [prop: string]: TBurgerIngredient }) => state.burgerConstructor.burgerIngredientsList);
+  const ingredients = useSelector((state: RootState) => state.burgerConstructor.burgerIngredientsList);
   const [openModal, setOpenModal] = useState(false);
-  const [orderNumber, saveOrderNumber] = useState(null);
+  const [orderNumber, saveOrderNumber] = useState<number | null>(null);
+  const [orderStatus, setOrderStatus] = useState<string | null>(null);
 
-  const setOrder = async () =>  {
+  const setOrder = async () => {
     setOpenModal(true);
-    if (getCookie('token') && localStorage.getItem('refreshToken')) {
-      const ingredientIds = ingredients.map((item) => item._id);
-      try {
-        const response = await axios.post(`${API_DOMAIN}/api/orders`, {
-          ingredients: ingredientIds,
-        });
+    const token = getCookie('token');
 
-        if (response && response.data && response.data.success) {
-          saveOrderNumber(response.data.order.number);
-        }
-      } catch (error) {
-        console.error('Ошибка:', error);
+    if (token && localStorage.getItem('refreshToken')) {
+      const ingredientIds: string[] = ingredients.map((item) => item._id);
+
+      const orderResponse = await createOrderWithTokenRefresh(ingredientIds, token);
+
+      if (orderResponse.success) {
+        saveOrderNumber(orderResponse.orderNumber || null);
+        setOrderStatus(orderResponse.orderStatus || null);
+      } else {
+        console.error(orderResponse.errorMessage || 'ошибка');
       }
     } else {
       navigate('/login');
     }
   };
 
+  
+
+
   const clickCloseModal = () => {
     setOpenModal(false);
     dispatch(cancelOrder());
+    saveOrderNumber(null);
+    setOrderStatus(null);
   };
 
-  const bunSelect = useMemo(() => ingredients.filter((item) => item.type === 'bun'), [ingredients]);
-  const ingredientSelect = useMemo(() => ingredients.filter((item) => item.type !== 'bun'), [ingredients]);
+  const bunSelect = useMemo(
+    () => ingredients.filter((item) => item.type === 'bun'),
+    [ingredients]
+  );
+  const ingredientSelect = useMemo(
+    () => ingredients.filter((item) => item.type !== 'bun'),
+    [ingredients]
+  );
 
-  const AllPrice = useMemo(() => ingredients.reduce((acc, item) => acc + item.price * (item.type === 'bun' ? 2 : 1), 0), [ingredients]);
+  const AllPrice = useMemo(
+    () =>
+      ingredients.reduce(
+        (acc, item) => acc + item.price * (item.type === 'bun' ? 2 : 1),
+        0
+      ),
+    [ingredients]
+  );
 
   const handleDrop = (item: any) => {
     let useItem = { ...item, dateValue: Date.now() };
@@ -77,16 +103,25 @@ const BurgerConstructor: FC = () => {
   });
 
   const deleteIngredient = (ingredient: TIngredientProps): void => {
-    const updatedIngredients = ingredients.filter((item) => ingredient.dateValue !== item.dateValue);
+    const updatedIngredients = ingredients.filter(
+      (item) => ingredient.dateValue !== item.dateValue
+    );
     dispatch(setBurgerIngredientsList(updatedIngredients as any));
   };
 
   const dragItem = (draggedId: number, hoveredId: number) => {
-    const idDragItem = ingredients.findIndex((el) => el.dateValue === draggedId);
-    const idHoveredItem = ingredients.findIndex((el) => el.dateValue === hoveredId);
+    const idDragItem = ingredients.findIndex(
+      (el) => el.dateValue === draggedId
+    );
+    const idHoveredItem = ingredients.findIndex(
+      (el) => el.dateValue === hoveredId
+    );
 
     let choiceIngredients: any = [...ingredients];
-    const dragItem: TBurgerIngredient = choiceIngredients.splice(idDragItem, 1)[0];
+    const dragItem: TBurgerIngredient = choiceIngredients.splice(
+      idDragItem,
+      1
+    )[0];
     choiceIngredients.splice(idHoveredItem, 0, dragItem);
 
     dispatch(setBurgerIngredientsList(choiceIngredients));
@@ -186,7 +221,7 @@ const BurgerConstructor: FC = () => {
 
       {openModal && (
         <Modal onClose={clickCloseModal}>
-          <OrderDetails orderId={orderNumber} />
+          <OrderDetails orderId={Number(orderNumber)} status={orderStatus} />
         </Modal>
       )}
     </section>

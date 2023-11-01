@@ -8,88 +8,104 @@ import {
   getUserRequest,
   editUserRequest,
 } from '../authoris-api';
-import { Dispatch } from 'redux';
+import { GET_USER_FAILED, GET_USER_REQUEST, GET_USER_SUCCESS, SET_USER, GET_REGISTER_REQUEST, GET_REGISTER_FAILED, GET_REGISTER_SUCCESS, LOG_OUT_FAILED, LOG_OUT_REQUEST, LOG_OUT_SUCCESS, GET_LOGIN_SUCCESS, GET_LOGIN_FAILED, GET_LOGIN_REQUEST, FORGOT_PASSWORD_FAILED, FORGOT_PASSWORD_REQUEST, FORGOT_PASSWORD_SUCCESS, USER_FAILED, USER_REQUEST, USER_SUCCESS, RESET_PASSWORD_FAILED, RESET_PASSWORD_REQUEST, RESET_PASSWORD_SUCCESS } from '../constants/users';
+import {
+  TRegisterRequestAction,
+  TRegisterSuccessAction,
+  TRegisterFailedAction,
+  TLoginRequestAction,
+  TLoginSuccessAction,
+  TLoginFailedAction,
+  TLogOutRequestAction,
+  TLogOutSuccessAction,
+  TLogOutFailedAction,
+  TForgotPasswordRequestAction,
+  TForgotPasswordSuccessAction,
+  TForgotPasswordFailedAction,
+  TResetPasswordRequestAction,
+  TResetPasswordSuccessAction,
+  TResetPasswordFailedAction,
+  TUserRequestAction,
+  TUserRequestSuccessAction,
+  TUserRequestFailedAction,
+  TSetUserRequestAction,
+  TGetUserRequestAction,
+  TGetUserSuccessAction,
+  TGetUserFailedAction,
+} from '../constants/usersTypes'
+import { AppDispatch, AppThunkAction } from '../../utils/types';
 
-export const GET_REGISTER_REQUEST = 'GET_REGISTER_REQUEST';
-export const GET_REGISTER_SUCCESS = 'GET_REGISTER_SUCCESS';
-export const GET_REGISTER_FAILED = 'GET_REGISTER_FAILED';
 
-export const GET_LOGIN_REQUEST = 'GET_LOGIN_REQUEST';
-export const GET_LOGIN_SUCCESS = 'GET_LOGIN_SUCCESS';
-export const GET_LOGIN_FAILED = 'GET_LOGIN_FAILED';
 
-export const LOG_OUT_REQUEST = 'LOG_OUT_REQUEST';
-export const LOG_OUT_SUCCESS = 'LOG_OUT_SUCCESS';
-export const LOG_OUT_FAILED = 'LOG_OUT_FAILED';
+export type TUsersAction = TRegisterRequestAction | TRegisterSuccessAction | TRegisterFailedAction 
+| TLoginRequestAction | TLoginSuccessAction | TLoginFailedAction
+| TLogOutRequestAction | TLogOutSuccessAction | TLogOutFailedAction
+| TForgotPasswordRequestAction | TForgotPasswordSuccessAction | TForgotPasswordFailedAction
+| TResetPasswordRequestAction | TResetPasswordSuccessAction | TResetPasswordFailedAction 
+| TUserRequestAction | TUserRequestSuccessAction | TUserRequestFailedAction
+| TSetUserRequestAction
+| TGetUserRequestAction | TGetUserSuccessAction | TGetUserFailedAction;
 
-export const FORGOT_PASSWORD_REQUEST = 'FORGOT_PASSWORD_REQUEST';
-export const FORGOT_PASSWORD_SUCCESS = 'FORGOT_PASSWORD_SUCCESS';
-export const FORGOT_PASSWORD_FAILED = 'FORGOT_PASSWORD_FAILED';
 
-export const RESET_PASSWORD_REQUEST = 'RESET_PASSWORD_REQUEST';
-export const RESET_PASSWORD_SUCCESS = 'RESET_PASSWORD_SUCCESS';
-export const RESET_PASSWORD_FAILED = 'RESET_PASSWORD_FAILED';
 
-export const USER_REQUEST = 'USER_REQUEST';
-export const USER_SUCCESS = 'USER_SUCCESS';
-export const USER_FAILED = 'USER_FAILED';
-export const SET_USER = 'SET_USER';
-export const GET_USER_REQUEST = 'GET_USER_REQUEST';
-export const GET_USER_SUCCESS = 'GET_USER_SUCCESS';
-export const GET_USER_FAILED = 'GET_USER_FAILED';
 
-export const register = async (email: string, password: string, name: string, dispatch: Dispatch) => {
+export const register = async (email: string, password: string, name: string, dispatch: AppDispatch): Promise<AppThunkAction | boolean | undefined> => {
   dispatch({ type: GET_REGISTER_REQUEST });
   try {
-    const response = await registerRequest(email, password, name);
-    const accessToken = response.accessToken ? response.accessToken.split('Bearer ')[1] : undefined;
-    if (accessToken) {
-      setCookie('token', accessToken);
-    }
+      const response = await registerRequest(email, password, name);
+      const accessToken = response.accessToken ? response.accessToken.split('Bearer ')[1] : undefined;
+      if (accessToken) {
+          setCookie('token', accessToken);
+      }
 
-    if (response.refreshToken) {
-      localStorage.setItem('refreshToken', response.refreshToken);
-    }
+      if (response.refreshToken) {
+          localStorage.setItem('refreshToken', response.refreshToken);
+      }
 
-    if (response.success) {
-      dispatch({ type: SET_USER, payload: response.user });
-    }
+      if (response.user) {
+          dispatch({ type: SET_USER, payload: response.user });
+      }
 
-    dispatch({ type: GET_REGISTER_SUCCESS, payload: response.success });
+      dispatch({ type: GET_REGISTER_SUCCESS, payload: response.success });
 
-    return response.success;
+      return response.success;
   } catch (error: any) {
-    dispatch({ type: GET_REGISTER_FAILED, payload: `Ошибка: ${error.message}` });
-    return false;
+      dispatch({ type: GET_REGISTER_FAILED, payload: `Ошибка: ${error.message}` });
+      return false;
   }
 };
 
-export const signIn = async (email: string, password: string, dispatch: Dispatch) => {
+
+export const signIn = async (email: string, password: string, dispatch: AppDispatch): Promise<AppThunkAction | boolean | undefined | void> => {
   dispatch({ type: GET_LOGIN_REQUEST });
   try {
-    const response = await loginRequest(email, password);
-    const accessToken = response.accessToken ? response.accessToken.split('Bearer ')[1] : undefined;
-    if (accessToken) {
-      setCookie('token', accessToken);
-    }
+      const response = await loginRequest(email, password);
+      const accessToken = response.accessToken ? response.accessToken.split('Bearer ')[1] : undefined;
+      if (accessToken) {
+          setCookie('token', accessToken);
+      }
 
-    if(response.refreshToken){
-    localStorage.setItem('refreshToken', response.refreshToken);}
+      if (response.refreshToken) {
+          localStorage.setItem('refreshToken', response.refreshToken);
+      }
 
-    if (response.success) {
-      dispatch({ type: SET_USER, payload: response.user });
-    }
+      if (response.success) {
+          if (response.user) {
+              dispatch({ type: SET_USER, payload: response.user });
+          }
+      }
 
-    dispatch({ type: GET_LOGIN_SUCCESS, payload: response.success });
+      dispatch({ type: GET_LOGIN_SUCCESS, payload: response.success });
 
-    return response.success;
+      return response.success;
   } catch (error: any) {
-    dispatch({ type: GET_LOGIN_FAILED, payload: `Ошибка: ${error.message}` });
-    return false;
+      dispatch({ type: GET_LOGIN_FAILED, payload: `Ошибка: ${error.message}` });
+      return false;
   }
 };
 
-export const signOut = async (dispatch: Dispatch) => {
+
+export const signOut = async (dispatch: AppDispatch): Promise<AppThunkAction | boolean | undefined> => {
   dispatch({ type: LOG_OUT_REQUEST });
   if (localStorage.getItem('refreshToken')) {
     try {
@@ -114,7 +130,7 @@ export const signOut = async (dispatch: Dispatch) => {
   }
 };
 
-export const forgotPassword = async (email: string, dispatch: Dispatch) => {
+export const forgotPassword = async (email: string, dispatch: AppDispatch): Promise<AppThunkAction | boolean | undefined> => {
   dispatch({ type: FORGOT_PASSWORD_REQUEST });
   try {
     const response = await forgotPasswordRequest(email);
@@ -126,7 +142,7 @@ export const forgotPassword = async (email: string, dispatch: Dispatch) => {
   }
 };
 
-export const resetPassword = async (password: string, token: string, dispatch: Dispatch) => {
+export const resetPassword = async (password: string, token: string, dispatch: AppDispatch): Promise<AppThunkAction | boolean | undefined> => {
   dispatch({ type: RESET_PASSWORD_REQUEST });
   try {
     const response = await resetPasswordRequest(password, token);
@@ -138,27 +154,32 @@ export const resetPassword = async (password: string, token: string, dispatch: D
   }
 };
 
-export const getUser = async (dispatch: Dispatch) => {
+export const getUser = async (dispatch: AppDispatch): Promise<boolean | undefined> => {
   dispatch({ type: USER_REQUEST });
-  try {
-    const response = await getUserRequest();
-    if (response.success) {
-      dispatch({ type: SET_USER, payload: response.user });
-    }
 
-    dispatch({ type: USER_SUCCESS, payload: response.success });
-  } catch (error: any) {
-    dispatch({ type: USER_FAILED , payload: `Ошибка: ${error.message}`});
-    return false;
+  try {
+      const response = await getUserRequest();
+      
+      if (response.success) {
+          if (response.user) {
+              dispatch({ type: SET_USER, payload: response.user });
+          }
+      }
+      
+      dispatch({ type: USER_SUCCESS, payload: response.success });
+      return response.success;
+  } catch (error) {
+      dispatch({ type: USER_FAILED });
+      return false;
   }
 };
 
-export const editUser = async (email: string, password: string, name: string, dispatch: Dispatch) => {
+export const editUser = async (email: string, password: string, name: string, dispatch: AppDispatch) => {
   dispatch({ type: GET_USER_REQUEST });
   try {
     const response = await editUserRequest(email, password, name);
     if (response.success) {
-      dispatch({ type: GET_USER_SUCCESS, payload: response.user });
+      dispatch({ type: GET_USER_SUCCESS, payload: response.success });
     } else {
       dispatch({ type: GET_USER_FAILED });
     }

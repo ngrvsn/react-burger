@@ -1,19 +1,21 @@
 import React, { useState, createRef, useEffect, RefObject, FC  } from 'react';
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getIngedients } from '../../services/actions/ingredients';
-import { useDispatch, useSelector } from 'react-redux';
+import { getIngredients } from '../../services/actions/ingredients';
+import {  useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import DraggableItem from './BurgerIngredientsDrag';
 import styles from './BurgerIngredients.module.css';
-import { TIngredient, TBurgerIngredient, TIngredientProps } from '../../utils/types';
+import { TIngredientProps } from '../../utils/types';
+import { AppDispatch, RootState, useDispatch,  } from '../../utils/types';
+import { TIngredientsState } from '../../services/reducers/ingredients';
 
 const BurgerIngredients: FC = () => {
   const location = useLocation();
-  const dispatch: Function = useDispatch();
-  const ingredientList = useSelector((state: { [prop: string]: TIngredient }) => state.ingredients.ingredientList);
-  const ingredientListFailed = useSelector((state: { [prop: string]: TIngredient }) => state.ingredients.ingredientListFailed);
-  const ingredientListRequest = useSelector((state: { [prop: string]: TIngredient }) => state.ingredients.ingredientListRequest);
-  const burgerIngredientsList = useSelector((state: { [prop: string]: TBurgerIngredient }) => state.burgerConstructor.burgerIngredientsList);
+  const dispatch: AppDispatch = useDispatch();
+  const ingredientList = useSelector((state: { [prop: string]: TIngredientsState }) => state.ingredients.ingredientList);
+  const ingredientListFailed = useSelector((state: { [prop: string]: TIngredientsState }) => state.ingredients.ingredientListFailed);
+  const ingredientListRequest = useSelector((state: { [prop: string]: TIngredientsState }) => state.ingredients.ingredientListRequest);
+  const burgerIngredientsList = useSelector((state: RootState) => state.burgerConstructor.burgerIngredientsList);
 
 
 
@@ -24,7 +26,7 @@ const BurgerIngredients: FC = () => {
   const tabLabels = ['Булки', 'Соусы', 'Начинки'];
 
   useEffect(() => {
-    dispatch(getIngedients());
+    dispatch(getIngredients());
   }, [dispatch]);
 
   const activeTab = (tab:string): void => {

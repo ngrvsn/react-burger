@@ -1,45 +1,40 @@
-import { getCookie, setCookie, deleteCookie } from './cookies';
+import { getCookie, setCookie } from './cookies';
 import { API_DOMAIN } from './api-domain';
-import { TIngredient, TUser, TOrderProps } from '../utils/types';
+import { TUser, TOrderProps, TIngredientProps } from '../utils/types';
+import axios from 'axios';
 
 
-type TParams = {
-  headers?: TRequestHeaders;
+
+
+type TOptions = {
+  headers?: Record<string, string>;
   method?: string;
   body?: string;
-  mode?: RequestMode;
-  cache?: RequestCache;
-  credentials?: RequestCredentials;
-  redirect?: RequestRedirect;
-  referrerPolicy?: ReferrerPolicy;
+  refreshToken?: string;
+  accessToken?: string;
+  token?: string
 };
+
 
 type TAuthUser = {
   email?: string;
   name?: string;
+  method?: string;
+  body?: string
   success?: boolean;
   user?: TUser;
   refreshToken?: string;
   accessToken?: string;
 };
 
-type TApiResponse = {
+type TResponse = {
+  method?: string;
+  body?: string
   success: boolean;
   refreshToken?: string;
   accessToken?: string;
 };
 
-type TRequestHeaders = {
-  [key: string]: string;
-};
-
-export type TIngredientsResponse = TApiResponse & {
-  data?: Array<TIngredient>;
-};
-
-export type TOrderResponse = TApiResponse & {
-  order?: TOrderProps;
-};
 
 
 const checkResponse = async <T>(res: Response): Promise<T> => {
@@ -60,7 +55,7 @@ const checkSuccess = <T extends { success: boolean }>(res: T): T => {
 
 
 
-export const request = async (endpoint: string, options: RequestInit): Promise<TApiResponse> => {
+export const request = async (endpoint: string, options: RequestInit): Promise<TResponse> => {
   try {
     const response = await fetch(`${API_DOMAIN}/api/${endpoint}`, options);
     return await checkResponse(response);
@@ -70,7 +65,7 @@ export const request = async (endpoint: string, options: RequestInit): Promise<T
 };
 
 
-const updateRefreshToken = async (endpoint: string,options: TParams): Promise<{ success: boolean }> => {
+export const updateRefreshToken = async (endpoint: string, options: TOptions): Promise<{ success: boolean, token?: string }> => {
   const refreshToken = localStorage.getItem("refreshToken");
 
   return refreshToken
@@ -94,14 +89,18 @@ const updateRefreshToken = async (endpoint: string,options: TParams): Promise<{ 
 
           options.headers && (options.headers.Authorization = `Bearer ${accessToken}`);
 
-          return request(endpoint, options);
+          return {
+            success: true,
+            token: accessToken,
+          };
         })
         .catch(() => ({ success: false }))
     : { success: false };
 };
 
 
-export const authValid = async (endpoint: string, options: TParams): Promise<{success: boolean; message?: string;}> => {
+
+export const authValid = async (endpoint: string, options: TOptions): Promise<{success: boolean; message?: string;}> => {
   try {
       return await request(endpoint, options);
   } catch (error: any) {
@@ -115,6 +114,7 @@ export const authValid = async (endpoint: string, options: TParams): Promise<{su
       return { success: false };
   }
 };
+
 
 
 
@@ -184,50 +184,145 @@ export const resetPasswordRequest = async (email: string, token: string): Promis
 };
 
 
-export const orderRequest = async (idItem: string): Promise<TOrderResponse> => {
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json;charset=utf-8',
-      Authorization: 'Bearer ' + getCookie('token'),
-    },
-    body: JSON.stringify({ ingredients: idItem }),
-  };
-
-  return await authValid('orders', requestOptions);
-};
-
-type ResponseWithSuccess = {
-  success: boolean;
-};
-
-export const generalRequest = async <T extends ResponseWithSuccess>(endpoint: string, options: RequestInit): Promise<T> => {
-  const response = await fetch(`https://norma.nomoreparties.space/api/${endpoint}`, options);
-  const data = await checkResponse(response) as T;
-  return checkSuccess<T>(data);
-};
 
 
 export const getUserRequest = (): Promise<Partial<TAuthUser>> => authValid('auth/user', {
-  method: "GET",
-  headers: {
-      Authorization: 'Bearer ' + getCookie('token')
-  }
-});
+  method: "GET", headers: {Authorization: 'Bearer ' + getCookie('token')}});
 
 export const editUserRequest = async (email: string, password: string, name: string): Promise<Partial<TAuthUser>> => {
   return await authValid('auth/user', {
       method: 'PATCH',
-      headers: {
-          'Content-Type': 'application/json;charset=utf-8',
-          Authorization: 'Bearer ' + getCookie('token'),
-      },
-      body: JSON.stringify({
-          name: name,
-          email: email,
-          password: password,
+      headers: {'Content-Type': 'application/json;charset=utf-8',Authorization: 'Bearer ' + getCookie('token'),},
+      body: JSON.stringify({name: name, email: email, password: password,
       }),
+    });
+};
+
+type TIngredientsRequestResponse = {
+  success: boolean;
+  refreshToken?: string;
+  accessToken?: string;
+  data?: TIngredientProps[];
+};
+
+export const getIngedientsRequest = (): Promise<TIngredientsRequestResponse> => request('ingredients', { method: "GET" });
+
+ 
+
+type TOrderRequestResponse = {
+  success: boolean;
+  refreshToken?: string;
+  accessToken?: string;
+  order?: TOrderProps;
+};
+
+export const orderRequest = (idItem: string[]): Promise<TOrderRequestResponse> => {
+  const token = getCookie('token');
+  console.log('Токен:', token);
+  console.log(idItem);
+
+  return authChecker('orders', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json;charset=utf-8',Authorization: 'Bearer ' + getCookie('token'),},
+    body: `{"ingredients": ${JSON.stringify(idItem)}}`
   });
 };
 
-export const getIngedientsRequest = (): Promise<TIngredientsResponse> => request('ingredients', {});
+
+
+  export const authChecker = async (endpoint: string, options: TOptions): Promise<{
+    success: boolean;
+  }> => {
+    try {
+      const response = await request(endpoint, options);
+      return response;
+    } catch (error) {
+      if (error instanceof Error && error.message === "jwt expired") {
+        return updateRefreshToken(endpoint, options);
+      } else {
+        return { success: false };
+      }
+    }
+  };
+
+
+  
+type TOrderWithRefresh = {
+  success: boolean;
+  orderNumber?: number;
+  orderStatus?: string;
+  errorMessage?: string;
+};
+
+export const createOrderWithTokenRefresh = async (
+    ingredients: string[],
+    token: string
+  ):Promise<Partial<TOrderWithRefresh>> => {
+    try {
+      const refreshedToken = await updateRefreshToken('/token', {method: 'POST',headers: { Authorization: `Bearer ${token}` },
+    });
+   if (refreshedToken && refreshedToken.success) {
+        const newToken = refreshedToken.token;
+        const response = await fetch(`${API_DOMAIN}/api/orders`, {method: 'POST',headers: {'Content-Type': 'application/json',Authorization: `Bearer ${newToken}`,},
+        body: JSON.stringify({ ingredients }),
+        });
+  if (response.ok) {
+          const responseData = await response.json();
+          if (responseData.success) {
+         return {
+         success: true,
+         orderNumber: responseData.order.number,
+         orderStatus: responseData.order.status}; }
+    }
+     } else {
+        return {
+         success: false,
+        errorMessage: 'ошибка обновления токена',
+        };
+      }
+   return {
+    success: false,
+    errorMessage: 'заказ не создан',
+    };
+    } catch (error) {  
+      return {
+        success: false,
+        errorMessage: 'ошибка',
+      };
+    }
+  };
+  
+
+  export const updateTokenSocket = async (): Promise<{ success: boolean, accessToken?: string }> => {
+    const refreshToken = getCookie("refreshToken");
+  
+    if (!refreshToken) {
+      return { success: false };
+    }
+  
+    try {
+      const response = await fetch(`${API_DOMAIN}/api/auth/token`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ token: refreshToken }),
+      });
+  
+      if (!response.ok) {
+        return { success: false };
+      }
+  
+      const data = await response.json();
+      const accessToken = data.accessToken && data.accessToken.split("Bearer ")[1];
+  
+      if (accessToken) {
+        setCookie("token", accessToken, { path: "/" });
+      }
+  
+      return { success: true, accessToken: data.accessToken };
+    } catch (error) {
+      return { success: false };
+    }
+  };
+  

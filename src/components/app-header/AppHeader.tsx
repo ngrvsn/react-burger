@@ -28,7 +28,7 @@ const AppHeader: FC = () => {
             <span className={styles.linkText}>Конструктор</span>
           </NavLink>
 
-          <NavLink to='/profile/orders' className={setActiveLink}>
+          <NavLink to='/feed' className={setActiveLink}>
             <ListIcon type='secondary' />
             <span className={styles.linkText}>Лента заказов</span>
           </NavLink>

@@ -2,8 +2,8 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useEffect, useState, ReactElement  } from 'react';
 import { getCookie } from '../../services/cookies';
 import { getUser } from '../../services/actions/users';
-import { useDispatch, useSelector } from 'react-redux';
-import { TAuthorisation } from '../../utils/types';
+import { RootState, useSelector, useDispatch, AppDispatch } from '../../utils/types';
+import { TUsersState } from '../../services/reducers/users';
 
 type TProtectedRouteElementProp = {
     element: ReactElement;
@@ -12,10 +12,11 @@ type TProtectedRouteElementProp = {
 
 
   export function ProtectedRouteElement({ element, noNeedAuth }: TProtectedRouteElementProp) {
-    const dispatch = useDispatch();
-    const user = useSelector((state: { [prop: string]: TAuthorisation }) => state.user.user);
+    const dispatch: AppDispatch = useDispatch();
+    const user = useSelector((state: RootState) => state.user.user);
     const [authUser, setAuthUser] = useState(false);
     const location = useLocation();
+
 
     const init = async () => {
         await getUser(dispatch);
@@ -30,7 +31,10 @@ type TProtectedRouteElementProp = {
         }
     }, []);
 
+    
     if (!authUser) return null
+
+
 
     if (noNeedAuth) {
         return user ? <Navigate to="/" replace /> : element;
