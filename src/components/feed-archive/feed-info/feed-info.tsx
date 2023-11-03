@@ -3,12 +3,11 @@ import { useSelector } from 'react-redux';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { AppDispatch, TOrdersSectionProps, TIngredientProps, useDispatch, RootState } from '../../../utils/types';
 import { TIngredientsState } from '../../../services/reducers/ingredients';
-import { useLocation, useParams } from 'react-router-dom'; // Импортируем useParams
+import { useLocation } from 'react-router-dom'; 
 import { getIngredients } from '../../../services/actions/ingredients';
 import { updateOrder } from '../../../services/actions/order';
-import { WebSocketStart, WebSocketsClose } from '../../../services/actions/orders-all';
-import { getCookie } from '../../../services/cookies';
-import { WebSocketStartUser, WebSocketsCloseUser } from '../../../services/actions/orders-user';
+
+
 
 import styles from './feed-info.module.css';
 
@@ -20,16 +19,17 @@ const FeedInfo: FC = () => {
     const ordersPublic = useSelector((state: RootState) => state.orderTracking.orders);
     const ordersUser = useSelector((state: RootState) => state.orderTrackingUser.orders);
 
-    const token = getCookie("token");
+  
 
-    
-    useEffect(() => {
-        const storedOrderData = localStorage.getItem('currentOrder');
-        if (storedOrderData) {
-            const currentOrder = JSON.parse(storedOrderData);
-            dispatch(updateOrder(currentOrder));
-        }
-    }, []);
+  /* eslint-disable */
+useEffect(() => {
+    const storedOrderData = localStorage.getItem('currentOrder');
+    if (storedOrderData) {
+        const currentOrder = JSON.parse(storedOrderData);
+        dispatch(updateOrder(currentOrder));
+    }
+}, []);
+/* eslint-enable */
 
 
     const ordersSplit = (): void => {
@@ -43,17 +43,19 @@ const FeedInfo: FC = () => {
         }
     };
 
-    useEffect(() => {
-        if (updatedOrder === null) ordersSplit()
-        if (!location.state) {
-            ordersSplit();
-            dispatch(getIngredients());
-        }
+  /* eslint-disable */
+useEffect(() => {
+    if (updatedOrder === null) ordersSplit();
+    if (!location.state) {
+        ordersSplit();
+        dispatch(getIngredients());
+    }
 
-        return () => {
-            dispatch(updateOrder(null));
-        };
-    }, [location.pathname]);
+    return () => {
+        dispatch(updateOrder(null));
+    };
+}, [location.pathname]);
+/* eslint-enable */
 
     const infoItem = (): TIngredientProps[] => {
         const ingredientId: string[] = updatedOrder ? updatedOrder.ingredients : [];

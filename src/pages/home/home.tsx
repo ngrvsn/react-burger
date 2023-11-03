@@ -9,7 +9,7 @@ import styles from './home.module.css';
 export const HomePage = () => {
   return (
     <main className={styles.main}>
-      <h1 className={styles.title}></h1>
+  
       <DndProvider backend={HTML5Backend}>
         <BurgerIngredients />
         <BurgerConstructor />

@@ -33,7 +33,7 @@ export function setCookie(key: string, value: string | null, props: {[key: strin
 
 export function getCookie(key: string): string | undefined {
   const matches = document.cookie.match(
-    new RegExp('(?:^|; )' + key.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
+    new RegExp('(?:^|; )' + key.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)') // eslint-disable-line
   );
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }

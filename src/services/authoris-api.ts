@@ -1,7 +1,7 @@
 import { getCookie, setCookie } from './cookies';
 import { API_DOMAIN } from './api-domain';
 import { TUser, TOrderProps, TIngredientProps } from '../utils/types';
-import axios from 'axios';
+
 
 
 
@@ -46,12 +46,6 @@ const checkResponse = async <T>(res: Response): Promise<T> => {
   }
 };
 
-const checkSuccess = <T extends { success: boolean }>(res: T): T => {
-  if (res.success) {
-    return res;
-  }
-  throw new Error(`Ошибка: ${JSON.stringify(res)}`);
-};
 
 
 

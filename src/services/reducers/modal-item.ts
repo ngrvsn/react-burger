@@ -1,4 +1,4 @@
-import { MODAL_INGREDIENT, MODAL_DELETE_INGREDIENT } from "../constants/modal-item";
+import { MODAL_INGREDIENT } from "../constants/modal-item";
 import { TIngredientProps } from "../../utils/types";
 import { TModalAction } from "../actions/modal-item";
 

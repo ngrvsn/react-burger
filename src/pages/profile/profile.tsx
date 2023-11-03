@@ -1,7 +1,7 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { Button, EmailInput, Input } from '@ya.praktikum/react-developer-burger-ui-components';
 import ProfileButtons from '../profile-buttons/profile-buttons';
-import { editUser, getUser } from '../../services/actions/users';
+import { editUser } from '../../services/actions/users';
 import { RootState, useSelector, useDispatch } from '../../utils/types';
 import { useLocation } from 'react-router-dom';
 

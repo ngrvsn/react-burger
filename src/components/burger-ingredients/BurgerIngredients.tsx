@@ -5,12 +5,12 @@ import { Link, useLocation } from 'react-router-dom';
 import DraggableItem from './BurgerIngredientsDrag';
 import styles from './BurgerIngredients.module.css';
 import { TIngredientProps } from '../../utils/types';
-import { AppDispatch, RootState, useDispatch } from '../../utils/types';
+import {  RootState } from '../../utils/types';
 import { TIngredientsState } from '../../services/reducers/ingredients';
 
 const BurgerIngredients: FC = () => {
   const location = useLocation();
-  const dispatch: AppDispatch = useDispatch();
+
   const ingredientList = useSelector((state: { [prop: string]: TIngredientsState }) => state.ingredients.ingredientList);
   const ingredientListFailed = useSelector((state: { [prop: string]: TIngredientsState }) => state.ingredients.ingredientListFailed);
   const ingredientListRequest = useSelector((state: { [prop: string]: TIngredientsState }) => state.ingredients.ingredientListRequest);

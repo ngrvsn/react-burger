@@ -11,11 +11,11 @@
     flex-direction: row;
     flex-wrap: nowrap; 
     justify-content: space-between;
-    padding-top: 50px;
+    
 }
 
 
-.columnWrapper{
+.number{
     color: #00CCCC;
 font-size: 40px;
 font-weight: 300;
@@ -26,22 +26,7 @@ display: inline-block;
 grid-template-columns: repeat(10, auto);
 font-family: 'Iceland';
 
-grid-template-columns: 1fr 1fr; 
-grid-gap: 10px;
-margin-top: 15px;
 
-
-
-
-}
-
-.second{
-    padding-left: 50px;
-}
-
-
-.inProgress{
-    padding-left: 100px;
 }
 
 

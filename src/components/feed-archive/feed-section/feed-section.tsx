@@ -2,76 +2,59 @@ import React, { FC } from 'react';
 import styles from './feed-section.module.css';
 import { RootState, useSelector } from '../../../utils/types';
 
+
+///Я не придумал что тут сделать, пытался делить общую переменную внутри разметки, консоль ошибку бьет на неуникальные пропсы
 const FeedSection: FC = () => {
     const orders = useSelector((state: RootState) => state.orderTracking.orders);
     const allOrders = useSelector((state: RootState) => state.orderTracking.total);
     const totalToday = useSelector((state: RootState) => state.orderTracking.totalToday);
 
-    const last20Orders = orders.slice(0, 20);
+    const last10Orders = orders.slice(0, 10);
+    const last10Orders2 = orders.slice(10, 20);
 
-    const readyOrdersNumbers = last20Orders
-      .filter(item => item.status === 'done')
-      .map(item => item.number)
-      .join(' ');
-  
-    const inProgressOrdersNumbers = last20Orders
-      .filter(item => item.status === 'pending')
-      .map(item => item.number)
-      .join(' ');
+    const readyOrders = last10Orders.filter(item => item.status === 'done');
+    const readyOrders2 = last10Orders2.filter(item => item.status === 'done');
+    const inProgressOrders = last10Orders.filter(item => item.status === 'pending');
 
-      return (
+    const readyOrdersNumbers = readyOrders.map(item => item.number).join(' ');
+    const readyOrdersNumbers2 = readyOrders2.map(item => item.number).join(' ');
+    const inProgressOrdersNumbers = inProgressOrders.map(item => item.number).join(' ');
+
+    return (
         <section className={`${styles.section} custom-scroll`}>
-          <div className={styles.wrapper}>
-            <div className={styles.allInfo}>
-              <div className={styles.readyOrder}>
-                <div className={styles.extraWrapper}>
-                  <h2 className={styles.text}>Готовы:</h2>
-                  <div className={styles.columnWrapper}>
-                    {readyOrdersNumbers
-                      .split(' ')
-                      .slice(0, 10)
-                      .map((item, index) => (
-                        <div key={index} className={styles.number}>
-                          {item}
+            <div className={styles.wrapper}> 
+                <div className={styles.allInfo} >
+                    <div className={styles.readyOrder}>
+                        <div className={styles.extraWrapper}> 
+                            <h2 className={styles.text}>Готовы:</h2>
+                            <div className={styles.readyColumn}>
+                            <div className={styles.number}>{readyOrdersNumbers}</div>
+                            <div className={styles.number}>{readyOrdersNumbers2}</div>
+                            </div>
                         </div>
-                      ))}
-                  </div>
-                  <div className={styles.columnWrapper}>
-                    {readyOrdersNumbers
-                      .split(' ')
-                      .slice(10, 20)
-                      .map((item, index) => (
-                       <div className={styles.second}> <div key={index} className={styles.number}>
-                          {item}
-                        </div></div>
-                      ))}
-                  </div>
+                    </div>
+                    <div className={styles.inProgress}>
+                        <div className={styles.extraWrapper}> 
+                            <h2 className={styles.textWork}>В работе:</h2>
+                            <div className={styles.numberProgress}>{inProgressOrdersNumbers}</div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-              <div className={styles.inProgress}>
-                <div className={styles.extraWrapper}>
-                  <h2 className={styles.textWork}>В работе:</h2>
-                  <div className={styles.numberProgress}>{inProgressOrdersNumbers}</div>
-                </div>
-              </div>
             </div>
             <div className={styles.allInfo}>
-              <div className={styles.extraWrapperBottom}>
-                <h2 className={styles.text}>Выполнено за все время:</h2>
-                <div className={styles.doneOrder}>{allOrders}</div>
-              </div>
+                    <div className={styles.extraWrapperBottom}> 
+                        <h2 className={styles.text}>Выполнено за все время:</h2>
+                        <div className={styles.doneOrder}>{allOrders}</div>
+                    </div>
             </div>
             <div className={styles.allInfo}>
-              <div className={styles.extraWrapperBottom}>
-                <h2 className={styles.text}>Выполнено за сегодня:</h2>
-                <div className={styles.doneOrder}>{totalToday}</div>
-              </div>
+                    <div className={styles.extraWrapperBottom}> 
+                        <h2 className={styles.text}>Выполнено за сегодня:</h2>
+                        <div className={styles.doneOrder}>{totalToday}</div>
+                    </div>
             </div>
-          </div>
         </section>
-      );
-      
-      
+    );
 };
 
 export default FeedSection;

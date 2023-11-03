@@ -17,8 +17,8 @@ import { ProtectedRouteElement } from '../protected-route/protected-route';
 import Modal from '../modal/Modal';
 import { FC, useEffect } from 'react';
 import { getIngredients } from '../../services/actions/ingredients';
-import { AppDispatch, RootState, useDispatch,  } from '../../utils/types';
-import { editUser, getUser } from '../../services/actions/users';
+import { AppDispatch, useDispatch,  } from '../../utils/types';
+import { getUser } from '../../services/actions/users';
 import FeedInfoPage from '../feed-archive/feed-info/feed-info-page';
 
 
@@ -32,15 +32,20 @@ const App:FC = () => {
   const dispatch: AppDispatch = useDispatch();
 
   const { state } = location;
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, []);
+ /* eslint-disable react-hooks/exhaustive-deps */
+useEffect(() => {
+  dispatch(getIngredients());
+}, []);
+/* eslint-enable react-hooks/exhaustive-deps */
 
-  useEffect(() => {
-    getUser(dispatch);
-  }, []);
+/* eslint-disable react-hooks/exhaustive-deps */
+useEffect(() => {
+  getUser(dispatch);
+}, []);
+/* eslint-enable react-hooks/exhaustive-deps */
 
-  
+
+
 
   return (
     <div className={styles.app}>

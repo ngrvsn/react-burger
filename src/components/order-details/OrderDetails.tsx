@@ -24,7 +24,7 @@ const OrderDetails = ({ orderId, status }: TOrderProp) => {
               <div>
                 <div className={styles.orderNumber}>{orderId}</div>
                 <div>Идентификатор заказа</div>
-                <img className={styles.image} src={DoneIcon} alt='done image' />
+                <img className={styles.iconDone} src={DoneIcon} alt='done ic' />
                 <div>Ваш заказ готов</div>
 
               </div>

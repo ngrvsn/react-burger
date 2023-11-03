@@ -13,17 +13,19 @@ const FeedInfoPage = () => {
   const token = getCookie("token");
   const location = useLocation();
 
-  useEffect(() => {
-    if (location.pathname.startsWith('/feed')) {
- 
-        dispatch(WebSocketStart());
-    } 
+ /* eslint-disable react-hooks/exhaustive-deps */
+useEffect(() => {
+  if (location.pathname.startsWith('/feed')) {
+      dispatch(WebSocketStart());
+  } 
 
-    return () => {
-        dispatch(WebSocketsClose());
-    };
+  return () => {
+      dispatch(WebSocketsClose());
+  };
 }, [location.pathname]);
+/* eslint-enable react-hooks/exhaustive-deps */
 
+ /* eslint-disable react-hooks/exhaustive-deps */
 useEffect(() => {
   if (location.pathname.startsWith('/profile/orders')) {
 
@@ -36,6 +38,7 @@ dispatch(WebSocketStartUser(token));
       dispatch(WebSocketsCloseUser());
   };
 }, [location.pathname]);
+ /* eslint-disable react-hooks/exhaustive-deps */
 
 
   return (

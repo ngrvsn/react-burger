@@ -1,4 +1,4 @@
-import {GET_ORDER_REQUEST, GET_ORDER_SUCCESS, GET_ORDER_FAILED, GET_ORDER_NUMBER,  UPDATE_ORDER} from '../constants/order';
+import {GET_ORDER_REQUEST, GET_ORDER_SUCCESS, GET_ORDER_FAILED,   UPDATE_ORDER} from '../constants/order';
 import { TOrderProps, TOrdersSectionProps } from '../../utils/types';
 import { TOrderAction } from '../actions/order';
 

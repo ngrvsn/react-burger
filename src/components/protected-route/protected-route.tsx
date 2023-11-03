@@ -3,7 +3,6 @@ import { useEffect, useState, ReactElement  } from 'react';
 import { getCookie } from '../../services/cookies';
 import { getUser } from '../../services/actions/users';
 import { RootState, useSelector, useDispatch, AppDispatch } from '../../utils/types';
-import { TUsersState } from '../../services/reducers/users';
 
 type TProtectedRouteElementProp = {
     element: ReactElement;
@@ -29,6 +28,7 @@ type TProtectedRouteElementProp = {
         } else {
             setAuthUser(true);
         }
+        // eslint-disable-next-line
     }, []);
 
     

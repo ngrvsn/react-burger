@@ -3,7 +3,7 @@ import { AppDispatch } from '../../utils/types';
 import { useLocation } from 'react-router-dom';
 import { setModalIngredient } from '../../services/actions/modal-item';
 import { getIngredients } from '../../services/actions/ingredients';
-import {  TIngredientProps, RootState, useSelector, useDispatch } from '../../utils/types';
+import {  TIngredientProps, useSelector, useDispatch } from '../../utils/types';
 import { TIngredientsState } from '../../services/reducers/ingredients';
 import { TIngedientModalState } from '../../services/reducers/modal-item';
 
@@ -17,7 +17,10 @@ const IngredientDetails: FC = ( ) => {
   const ingredientList = useSelector((state: { ingredients: TIngredientsState })=> state.ingredients.ingredientList);
   const location = useLocation();
   
-  const [selectedIngredient, setSelectedIngredient] = useState<TIngredientProps | null>(null);
+ /* eslint-disable */
+const [selectedIngredient, setSelectedIngredient] = useState<TIngredientProps | null>(null);
+/* eslint-enable */
+
 
   
   useEffect((): ReturnType<React.EffectCallback> => {

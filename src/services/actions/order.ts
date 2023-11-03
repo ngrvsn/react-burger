@@ -1,7 +1,7 @@
 import { orderRequest } from '../authoris-api';
 import { setBurgerIngredientsList } from './ingredient-list';
-import { TOrderProps,  AppDispatch, AppThunkAction, TOrdersSectionProps } from '../../utils/types';
-import { GET_ORDER_FAILED, GET_ORDER_NUMBER, GET_ORDER_REQUEST, GET_ORDER_SUCCESS,  UPDATE_ORDER, } from '../constants/order';
+import { TOrderProps,  AppDispatch,  TOrdersSectionProps } from '../../utils/types';
+import { GET_ORDER_FAILED, GET_ORDER_REQUEST, GET_ORDER_SUCCESS,  UPDATE_ORDER, } from '../constants/order';
 import { getCookie } from '../cookies';
 
 

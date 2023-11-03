@@ -34,6 +34,7 @@ const Feed: FC = () => {
         return () => {
             dispatch(WebSocketsClose());
         };
+         // eslint-disable-next-line
     }, [location.pathname]);
     
 
@@ -50,6 +51,7 @@ const Feed: FC = () => {
         return () => {
             dispatch(WebSocketsCloseUser());
         };
+         // eslint-disable-next-line
     }, [location.pathname]);
 
     
