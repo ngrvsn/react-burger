@@ -45,7 +45,7 @@ export type TWebSocketActionsUser =
 
   export const WebSocketStartUser = (token: string): TWSConnectionStartActionUser => ({
     type: WS_CONNECTION_START_USER,
-    payload: `{API_ORDERS_USER}?token=${token}`
+    payload: `${API_ORDERS_USER}?token=${token}`
   });
   
 
