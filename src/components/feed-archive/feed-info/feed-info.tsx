@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux';
 import { CurrencyIcon, FormattedDate } from '@ya.praktikum/react-developer-burger-ui-components';
 import { AppDispatch, TOrdersSectionProps, TIngredientProps, useDispatch, RootState } from '../../../utils/types';
 import { TIngredientsState } from '../../../services/reducers/ingredients';
-import { useLocation } from 'react-router';
+import { useLocation, useParams } from 'react-router-dom'; // Импортируем useParams
 import { getIngredients } from '../../../services/actions/ingredients';
 import { updateOrder } from '../../../services/actions/order';
-import { WebSocketStart } from '../../../services/actions/orders-all';
+import { WebSocketStart, WebSocketsClose } from '../../../services/actions/orders-all';
 import { getCookie } from '../../../services/cookies';
-import { WebSocketStartUser } from '../../../services/actions/orders-user';
+import { WebSocketStartUser, WebSocketsCloseUser } from '../../../services/actions/orders-user';
 
 import styles from './feed-info.module.css';
 
@@ -20,6 +20,9 @@ const FeedInfo: FC = () => {
     const ordersPublic = useSelector((state: RootState) => state.orderTracking.orders);
     const ordersUser = useSelector((state: RootState) => state.orderTrackingUser.orders);
 
+    const token = getCookie("token");
+
+    
     useEffect(() => {
         const storedOrderData = localStorage.getItem('currentOrder');
         if (storedOrderData) {
@@ -28,35 +31,22 @@ const FeedInfo: FC = () => {
         }
     }, []);
 
-    const publicOrUser = (): void => {
+
+    const ordersSplit = (): void => {
         const path = location.pathname.includes('/profile/') ? location.pathname.split('/profile/orders/')[1] : location.pathname.split('/feed/')[1];
 
-        const filteredOrders = (location.pathname.includes('/profile/') ? ordersUser : ordersPublic).filter((item: TOrdersSectionProps) => item._id === path);
+        const selectedOrder = (location.pathname.includes('/profile/') ? ordersUser : ordersPublic).find((item: TOrdersSectionProps) => item._id === path);
 
-        if (filteredOrders.length > 0) {
-            const selectedOrder = filteredOrders[0];
+        if (selectedOrder) {
             dispatch(updateOrder(selectedOrder));
-            
             localStorage.setItem('currentOrder', JSON.stringify(selectedOrder));
         }
     };
 
     useEffect(() => {
+        if (updatedOrder === null) ordersSplit()
         if (!location.state) {
-            if (location.pathname.startsWith('/profile')){
-                 dispatch(WebSocketStartUser(`wss://norma.nomoreparties.space/orders?token=${getCookie("token")}`));
-            } else {
-                dispatch(WebSocketStart("wss://norma.nomoreparties.space/orders/all"));
-            }
-        }
-
-        if (updatedOrder === null) publicOrUser();
-    }, [location.pathname]);
-
-
-    useEffect(() => {
-        if (!location.state) {
-            publicOrUser();
+            ordersSplit();
             dispatch(getIngredients());
         }
 
@@ -73,24 +63,34 @@ const FeedInfo: FC = () => {
     const itemsNumbers = (item: TIngredientProps): number | undefined => {
         if (updatedOrder) {
             const count = updatedOrder.ingredients.filter(e => e === item._id).length;
-            if (item.type === 'bun') {
-                return count ? count * 2 : undefined;
-            }
             return count;
         }
     };
 
+    const calculateTotalPrice = (): number => {
+        return infoItem().reduce((acc: number, item: TIngredientProps) => {
+            if (item.type === 'bun') {
+                return acc + (item.price * 2);
+            }
+            return acc + item.price;
+        }, 0);
+    };
+
+    
+
     const orderStatus = (): string => {
         switch (updatedOrder?.status) {
-        case 'done':
-            return 'Выполнен';
-        case 'pending':
-            return 'В работе';
-        case 'created':
+            case 'done':
+                return 'Выполнен';
+            case 'pending':
+                return 'В работе';
+            case 'created':
             default:
-            return 'Создан';
-    }
+                return 'Создан';
+        }
     };
+
+    const statusText = orderStatus();
 
     return (
         <main className={styles.main}>
@@ -105,7 +105,7 @@ const FeedInfo: FC = () => {
                     </h2>
 
                     <div className={`${styles.state} ${styles[updatedOrder.status]}`}>
-                        {orderStatus()}
+                        {statusText}
                     </div>
 
                     <p className={styles.text}>
@@ -122,13 +122,13 @@ const FeedInfo: FC = () => {
                                     <p className={styles.title}>
                                         {item.name}
                                     </p>
-                                    <div className={styles.price}>
-                                        <div className={styles.numbers}>
-                                            {`${itemsNumbers(item)} x ${item.price}`}
-                                        </div>
-                                        <div className={styles.primaryFeed}>
-                                            <CurrencyIcon type="primary" />
-                                        </div>
+                                </div>
+                                <div className={styles.price}>
+                                    <div className={styles.numbers}>
+                                        {`${itemsNumbers(item)} x ${item.price}`}
+                                    </div>
+                                    <div className={styles.primaryFeed}>
+                                        <CurrencyIcon type="primary" />
                                     </div>
                                 </div>
                             </div>
@@ -142,12 +142,7 @@ const FeedInfo: FC = () => {
                         <div className={styles.priceAll}>
                             <div className={styles.currency}> <CurrencyIcon type="primary" /> </div>
                             <div className={styles.ingredientsPrice}>
-                                {infoItem().reduce((acc: number, item: TIngredientProps) => {
-                                    if (item.type === 'bun') {
-                                        return acc + (item.price * 2);
-                                    }
-                                    return acc + item.price;
-                                }, 0)}
+                                {calculateTotalPrice()}
                             </div>
                         </div>
                     </div>

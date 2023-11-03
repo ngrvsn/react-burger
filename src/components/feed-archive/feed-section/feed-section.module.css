@@ -1,6 +1,6 @@
 
 .section {
-    font-family: 'Iceland';
+    font-family: 'JetBrains Mono';
     margin-left: 200px;
     
     
@@ -11,10 +11,11 @@
     flex-direction: row;
     flex-wrap: nowrap; 
     justify-content: space-between;
+    padding-top: 50px;
 }
 
 
-.number{
+.columnWrapper{
     color: #00CCCC;
 font-size: 40px;
 font-weight: 300;
@@ -23,8 +24,37 @@ letter-spacing: 0em;
 max-width: 200px; 
 display: inline-block;
 grid-template-columns: repeat(10, auto);
+font-family: 'Iceland';
+
+grid-template-columns: 1fr 1fr; 
+grid-gap: 10px;
+margin-top: 15px;
 
 
+
+
+}
+
+.second{
+    padding-left: 50px;
+}
+
+
+.inProgress{
+    padding-left: 100px;
+}
+
+
+.numberProgress{
+    color: #FFF;
+    font-size: 40px;
+font-weight: 300;
+line-height: 24px;
+letter-spacing: 0em;
+max-width: 200px; 
+display: inline-block;
+grid-template-columns: repeat(10, auto);
+font-family: 'Iceland';
 }
 
 .doneOrder {
@@ -36,10 +66,15 @@ grid-template-columns: repeat(10, auto);
     letter-spacing: 0em;
     text-align: left;
     text-shadow: 0 0 10px rgba(80, 80, 255, 0.5), 0 4px 20px rgba(80, 80, 255, 0.5);
+    font-family: 'Iceland';
 
 
 }
 
 .readyColumn{
     display: flex;
+    flex-direction: column;
+    display: inline-block;
+grid-template-columns: repeat(10, auto);
+font-family: 'Iceland';
 }

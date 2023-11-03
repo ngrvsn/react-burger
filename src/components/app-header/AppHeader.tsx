@@ -38,8 +38,9 @@ const AppHeader: FC = () => {
           </div>
 
           <NavLink to='/profile' className={setActiveLink}>
-            <ProfileIcon type='primary' />
-
+          <div className={styles.profile}><ProfileIcon type='primary' />
+            
+            Личный кабинет</div>
           </NavLink>
         </div>
       </header>

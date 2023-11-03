@@ -1,9 +1,11 @@
 .navLinkActive{
     color: #FFF;
+    text-decoration: none;
 }
 
 .navLinkInactive {
-    color:#8585ad
+    color:#8585ad;
+    text-decoration: none;
 }
 
 .wrapper {
@@ -24,5 +26,18 @@
     padding-top: 10px;
     font-size: 18px;
     font-family: 'JetBrains Mono';
+    padding-left: 200px;
   }
 
+  .buttons{ 
+
+font-family: 'JetBrains Mono';
+font-size: 24px;
+font-weight: 700;
+line-height: 30px;
+letter-spacing: 0em;
+text-align: left;
+padding-top: 15px;
+padding-left: 200px;
+
+  }

@@ -7,6 +7,7 @@ import { orderReducer } from './order';
 import { WebSocketUserReducer } from './orders-user';
 import { WebSocketReducer } from './orders-all';
 
+
 export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
   user: userReducer,
@@ -14,5 +15,7 @@ export const rootReducer = combineReducers({
   modalItem: modalItemReducer,
   order: orderReducer,
   orderTracking: WebSocketReducer,
-  orderTrackingUser: WebSocketUserReducer
+  orderTrackingUser: WebSocketUserReducer,
+
 });
+

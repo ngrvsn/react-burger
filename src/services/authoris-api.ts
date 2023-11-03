@@ -255,42 +255,64 @@ type TOrderWithRefresh = {
 };
 
 export const createOrderWithTokenRefresh = async (
-    ingredients: string[],
-    token: string
-  ):Promise<Partial<TOrderWithRefresh>> => {
-    try {
-      const refreshedToken = await updateRefreshToken('/token', {method: 'POST',headers: { Authorization: `Bearer ${token}` },
-    });
-   if (refreshedToken && refreshedToken.success) {
-        const newToken = refreshedToken.token;
-        const response = await fetch(`${API_DOMAIN}/api/orders`, {method: 'POST',headers: {'Content-Type': 'application/json',Authorization: `Bearer ${newToken}`,},
-        body: JSON.stringify({ ingredients }),
-        });
-  if (response.ok) {
-          const responseData = await response.json();
-          if (responseData.success) {
-         return {
-         success: true,
-         orderNumber: responseData.order.number,
-         orderStatus: responseData.order.status}; }
+  ingredients: string[],
+  token: string
+): Promise<Partial<TOrderWithRefresh>> => {
+  try {
+    const bunId1 = "643d69a5c3f7b9001cfa093d"; 
+    const bunId2 = "643d69a5c3f7b9001cfa093c"; 
+
+    if (ingredients.includes(bunId1)) {
+      ingredients.push(bunId1);
+    } else if (ingredients.includes(bunId2)) {
+      ingredients.push(bunId2);
     }
-     } else {
-        return {
-         success: false,
-        errorMessage: 'ошибка обновления токена',
-        };
+
+    const refreshedToken = await updateRefreshToken('/token', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (refreshedToken && refreshedToken.success) {
+      const newToken = refreshedToken.token;
+
+      const response = await fetch(`${API_DOMAIN}/api/orders`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${newToken}`,
+        },
+        body: JSON.stringify({ ingredients }),
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+        if (responseData.success) {
+          return {
+            success: true,
+            orderNumber: responseData.order.number,
+            orderStatus: responseData.order.status,
+          };
+        }
       }
-   return {
-    success: false,
-    errorMessage: 'заказ не создан',
-    };
-    } catch (error) {  
+    } else {
       return {
         success: false,
-        errorMessage: 'ошибка',
+        errorMessage: 'ошибка обновления токена',
       };
     }
-  };
+    return {
+      success: false,
+      errorMessage: 'заказ не создан',
+    };
+  } catch (error) {
+    return {
+      success: false,
+      errorMessage: 'ошибка',
+    };
+  }
+};
+
   
 
   export const updateTokenSocket = async (): Promise<{ success: boolean, accessToken?: string }> => {
@@ -309,20 +331,20 @@ export const createOrderWithTokenRefresh = async (
         body: JSON.stringify({ token: refreshToken }),
       });
   
-      if (!response.ok) {
+      if (response.ok) {
+        const data = await response.json();
+        if (data.accessToken) {
+          const accessToken = data.accessToken.split("Bearer ")[1];
+          if (accessToken) {
+            setCookie("token", accessToken, { path: "/" });
+          }
+        }
+  
+        return { success: true, accessToken: data.accessToken };
+      } else {
         return { success: false };
       }
-  
-      const data = await response.json();
-      const accessToken = data.accessToken && data.accessToken.split("Bearer ")[1];
-  
-      if (accessToken) {
-        setCookie("token", accessToken, { path: "/" });
-      }
-  
-      return { success: true, accessToken: data.accessToken };
     } catch (error) {
       return { success: false };
     }
   };
-  

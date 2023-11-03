@@ -6,8 +6,6 @@ import { RootState, useSelector, useDispatch } from '../../utils/types';
 import { useLocation } from 'react-router-dom';
 
 
-
-
 import styles from './profile.module.css';
 
 export const ProfilePage = () => {
@@ -23,13 +21,6 @@ export const ProfilePage = () => {
     
   const currentURL = location.pathname;
   console.log('Текущий URL:', currentURL);
-
-
-  
-
-  useEffect(() => {
-    getUser(dispatch);
-  }, []);
 
   useEffect(() => {
     if (user) {

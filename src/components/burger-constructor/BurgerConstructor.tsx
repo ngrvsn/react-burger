@@ -11,11 +11,8 @@ import Modal from '../modal/Modal';
 import OrderDetails from '../order-details/OrderDetails';
 import DraggableItem from './BurgerConstructorDrag';
 import { getCookie } from '../../services/cookies';
-import { API_DOMAIN } from '../../services/api-domain';
 import { cancelOrder } from '../../services/actions/order';
 import { setBurgerIngredientsList } from '../../services/actions/ingredient-list';
-import axios from 'axios';
-import { updateRefreshToken } from '../../services/authoris-api';
 import { createOrderWithTokenRefresh } from '../../services/authoris-api';
 import {
   TBurgerIngredient,
@@ -65,14 +62,12 @@ const BurgerConstructor: FC = () => {
     setOrderStatus(null);
   };
 
-  const bunSelect = useMemo(
-    () => ingredients.filter((item) => item.type === 'bun'),
-    [ingredients]
-  );
-  const ingredientSelect = useMemo(
-    () => ingredients.filter((item) => item.type !== 'bun'),
-    [ingredients]
-  );
+  const { bunSelect, ingredientSelect } = useMemo(() => {
+    return {
+      bunSelect: ingredients.filter((item) => item.type === 'bun'),
+      ingredientSelect: ingredients.filter((item) => item.type !== 'bun'),
+    };
+  }, [ingredients]);
 
   const AllPrice = useMemo(
     () =>

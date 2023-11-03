@@ -1,5 +1,6 @@
 import { WS_CONNECTION_START, WS_CONNECTION_CLOSED, WS_CONNECTION_ERROR, WS_CONNECTION_SUCCESS, WS_GET_MESSAGE } from "../constants/orders-all";
 import { TOrdersSectionProps } from "../../utils/types";
+import { API_ORDERS_FEED } from "../api-domain";
 
 type TWSConnectionStartAction = {
     type: typeof WS_CONNECTION_START;
@@ -35,10 +36,10 @@ export type TWebSocketRootActions = {
 };
  
 
-export const WebSocketStart = (url: string): TWSConnectionStartAction => ({
+export const WebSocketStart = () => ({
     type: WS_CONNECTION_START,
-    payload: url 
-})
+    payload: API_ORDERS_FEED,
+});
 
 export const WebSocketsClose = ():TWSConnectionClosedAction => ({
     type: WS_CONNECTION_CLOSED

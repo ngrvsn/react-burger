@@ -1,6 +1,7 @@
 import { TOrdersSectionProps } from "../../utils/types";
-import { WS_CONNECTION_CLOSED_USER, WS_CONNECTION_ERROR_USER, WS_CONNECTION_START_USER, WS_CONNECTION_SUCCESS_USER, WS_GET_MESSAGE_USER } from "../constants/orders-user";
+import { WS_CONNECTION_CLOSED_USER, WS_USER_URL, WS_CONNECTION_ERROR_USER, WS_CONNECTION_START_USER, WS_CONNECTION_SUCCESS_USER, WS_GET_MESSAGE_USER } from "../constants/orders-user";
 import { AppDispatch } from "../../utils/types";
+import { API_ORDERS_USER } from "../api-domain";
 
 export type TWSConnectionStartActionUser = {
   type: typeof WS_CONNECTION_START_USER;
@@ -42,11 +43,11 @@ export type TWebSocketActionsUser =
     onMessage: typeof WS_GET_MESSAGE_USER;
   };
 
-  export const WebSocketStartUser = (url: string):TWSConnectionStartActionUser => ({
+  export const WebSocketStartUser = (token: string): TWSConnectionStartActionUser => ({
     type: WS_CONNECTION_START_USER,
-    payload: url 
-
-})
+    payload: `{API_ORDERS_USER}?token=${token}`
+  });
+  
 
 export const WebSocketsCloseUser = ():TWSConnectionClosedActionUser => ({
 type: WS_CONNECTION_CLOSED_USER

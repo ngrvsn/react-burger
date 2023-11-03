@@ -15,7 +15,13 @@ import { FeedArchive } from '../feed-archive/feed-archive';
 import { FeedInfo } from '../feed-archive/feed-info/feed-info';
 import { ProtectedRouteElement } from '../protected-route/protected-route';
 import Modal from '../modal/Modal';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
+import { getIngredients } from '../../services/actions/ingredients';
+import { AppDispatch, RootState, useDispatch,  } from '../../utils/types';
+import { editUser, getUser } from '../../services/actions/users';
+import FeedInfoPage from '../feed-archive/feed-info/feed-info-page';
+
+
 
 import styles from './App.module.css';
 
@@ -23,8 +29,18 @@ import styles from './App.module.css';
 const App:FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
 
   const { state } = location;
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, []);
+
+  useEffect(() => {
+    getUser(dispatch);
+  }, []);
+
+  
 
   return (
     <div className={styles.app}>
@@ -44,7 +60,7 @@ const App:FC = () => {
         <Route path="/ingredients/:id" element={<IngredientsPage />}>
         <Route path="" element={<IngredientDetails />} />
         </Route>
-        <Route path="/feed/:id" element={<FeedInfo />} />
+        <Route path="/feed/:id" element={<FeedInfoPage />} />
         <Route path="/feed" element={<FeedArchive />} />
         
 
@@ -52,7 +68,7 @@ const App:FC = () => {
           noNeedAuth={false} />} />
         <Route path="/profile/orders" element={<ProtectedRouteElement element={<ProfileOrdersPage />} 
           noNeedAuth={false} />} />
-          <Route path="/profile/orders/:id" element={<ProtectedRouteElement element={<FeedInfo />} noNeedAuth={false} />} />
+          <Route path="/profile/orders/:id" element={<ProtectedRouteElement element={<FeedInfoPage />} noNeedAuth={false} />} />
 
         <Route path="*" element={<NotFoundPage />} />
 
