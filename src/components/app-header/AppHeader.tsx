@@ -38,7 +38,7 @@ const AppHeader: FC = () => {
           </div>
 
           <NavLink to='/profile' className={setActiveLink}>
-          <div data-testid="drop" className={styles.profile}><ProfileIcon type='primary' />
+          <div className={styles.profile}><ProfileIcon type='primary' />
             
             Личный кабинет</div>
           </NavLink>
