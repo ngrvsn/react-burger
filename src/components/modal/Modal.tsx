@@ -40,11 +40,11 @@ const Modal: FC<ModalProps> = ({ onClose, children, title }) => {
 
   return ReactDOM.createPortal(
     <div>
-      <div className={styles.modal}>
+      <div data-testid="modal" className={styles.modal}>
         <div className={styles.wrapper}>
           <div className={styles.title}>{title}</div>
-          <button className={styles.closeButton} type='button' onClick={onClose}>
-            <CloseIcon type='primary' />
+          <button className={styles.closeButton} type='button' onClick={onClose} data-testid="close-modal">
+            <CloseIcon  type='primary' />
           </button>
         </div>
         <ModalComponent>{children}</ModalComponent>

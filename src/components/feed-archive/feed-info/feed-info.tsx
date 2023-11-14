@@ -21,15 +21,14 @@ const FeedInfo: FC = () => {
 
   
 
-  /* eslint-disable */
-useEffect(() => {
-    const storedOrderData = localStorage.getItem('currentOrder');
-    if (storedOrderData) {
-        const currentOrder = JSON.parse(storedOrderData);
-        dispatch(updateOrder(currentOrder));
-    }
-}, []);
-/* eslint-enable */
+    useEffect(() => {
+        const storedOrderData = localStorage.getItem('currentOrder');
+        if (storedOrderData) {
+            const currentOrder = JSON.parse(storedOrderData);
+            dispatch(updateOrder(currentOrder));
+        }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, []);
 
 
     const ordersSplit = (): void => {

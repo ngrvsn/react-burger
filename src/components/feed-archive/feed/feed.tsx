@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useMatch } from 'react-router-dom';
 import { TOrdersSectionProps } from '../../../utils/types';
@@ -30,31 +30,26 @@ const Feed: FC = () => {
             dispatch(getIngredients());
             dispatch(WebSocketStart());
         } 
-    
+
         return () => {
             dispatch(WebSocketsClose());
         };
          // eslint-disable-next-line
     }, [location.pathname]);
-    
-
-
 
     useEffect(() => {
         if (location.pathname.startsWith('/profile')) {
             dispatch(getIngredients());
             if (token !== undefined) {
-  dispatch(WebSocketStartUser(token));
-}
+                dispatch(WebSocketStartUser(token));
+            }
         } 
-    
+
         return () => {
             dispatch(WebSocketsCloseUser());
         };
          // eslint-disable-next-line
     }, [location.pathname]);
-
-    
 
     const ingredientsInfo = (id: string[]): TIngredientProps[] => {
         const selectedIngredients = ingredientsList.filter(item => id.includes(item._id));
@@ -69,21 +64,17 @@ const Feed: FC = () => {
 
     const orderStatus = (status: string): string => {
         switch (status) {
-        case 'done':
-        default:
-            return 'Выполнен';
-        case 'pending':
-            return 'В работе';
-        case 'created':
-            return 'Создан'
-    }
-    }
-    
-    
+            case 'done':
+            default:
+                return 'Выполнен';
+            case 'pending':
+                return 'В работе';
+            case 'created':
+                return 'Создан'
+        }
+    };
+
     const statusText = orderStatus;
-
-
-    
 
     const ordersSplit = (item: TOrdersSectionProps) => {
         const ingredients = ingredientsInfo(item.ingredients);
@@ -101,7 +92,6 @@ const Feed: FC = () => {
                         <div className={styles.info}>#{item.number}</div>
                         <div className={`${styles.time} text_color_inactive`}><FormattedDate date={new Date(item.createdAt)} /></div>
                     </div>
-
                     <p className={styles.title}>{item.name}</p>
                     <div className={`${styles.wrapper}`}>
                     {!match && <h1 className={styles.state}>{statusText(item.status)}</h1>}
@@ -134,21 +124,24 @@ const Feed: FC = () => {
         );
     };
 
-    return (
+    const orders = useMemo(() => {
+        if (match) {
+          return publicOrders;
+        }
+        return userOrders.slice().reverse();
+      }, [match, publicOrders, userOrders]);
+    
+      const ordersRender = orders.map(ordersSplit);
+    
+      return (
         <section className={styles.section}>
-            {match && <h1 className="text text_type_main-large ">Лента заказов</h1>}
-            
-            <section className={`${styles.scroll} custom-scroll`}>
-                {match ? (
-                    publicOrders.map(ordersSplit)
-                ) : (
-                    userOrders.slice().reverse().map(ordersSplit)
-                    
-                )}
-            </section>
-           
+          {match && <h1 className="text text_type_main-large">Лента заказов</h1>}
+          <section className={`${styles.scroll} custom-scroll`}>
+            {ordersRender}
+          </section>
         </section>
-    );
-}
+      );
+    }
+
 
 export default Feed;

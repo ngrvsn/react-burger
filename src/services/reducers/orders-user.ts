@@ -41,7 +41,6 @@ export const WebSocketUserReducer = (
     case WS_CONNECTION_ERROR_USER:
       return {
         ...state,
-        error: action.payload,
         WebSocketConnect: false,
       };
 

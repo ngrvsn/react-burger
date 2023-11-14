@@ -30,7 +30,6 @@ export const WebSocketReducer = (state = initialState, action: TWebSocketActions
         case WS_CONNECTION_ERROR:
             return {
                 ...state,
-                error: action.payload,
                 WebSocketConnect: false
             };
 

@@ -2,8 +2,6 @@ import React, { FC } from 'react';
 import styles from './feed-section.module.css';
 import { RootState, useSelector } from '../../../utils/types';
 
-
-///Я не придумал что тут сделать, пытался делить общую переменную внутри разметки, консоль ошибку бьет на неуникальные пропсы
 const FeedSection: FC = () => {
     const orders = useSelector((state: RootState) => state.orderTracking.orders);
     const allOrders = useSelector((state: RootState) => state.orderTracking.total);

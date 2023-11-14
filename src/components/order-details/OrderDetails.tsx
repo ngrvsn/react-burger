@@ -25,7 +25,7 @@ const OrderDetails = ({ orderId, status }: TOrderProp) => {
                 <div className={styles.orderNumber}>{orderId}</div>
                 <div>Идентификатор заказа</div>
                 <img className={styles.iconDone} src={DoneIcon} alt='done ic' />
-                <div>Ваш заказ готов</div>
+                <div data-test-id="done-order">Ваш заказ готов</div>
 
               </div>
             ) : (
@@ -36,7 +36,7 @@ const OrderDetails = ({ orderId, status }: TOrderProp) => {
           </div>
         ) : (
           <div className={styles.waitin}>
-            <div>Ваш заказ начали готовить</div>
+            <div data-test-id="wait-order">Ваш заказ начали готовить</div>
             <div>Дождитесь готовности на орбитальной станции</div>
           </div>
         )}

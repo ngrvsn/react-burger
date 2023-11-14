@@ -126,11 +126,11 @@ const BurgerConstructor: FC = () => {
 
   return (
     <section className={styles.section} style={{ border }} ref={dropItem}>
-      <section className={styles.wrapper}>
+      <section data-test-id="drop-zone" className={styles.wrapper}>
         {bunSelect.length > 0 ? (
           bunSelect.map((ingredient: TIngredientProps) => (
             <section key={ingredient.dateValue} className={styles.ingredient}>
-              <div className={styles.ingredientIconWrapper}>
+              <div data-test-id="topbun-check" className={styles.ingredientIconWrapper}>
                 {ingredient.isLocked ? <DragIcon type="primary" /> : null}
                 <ConstructorElement
                   isLocked
@@ -145,7 +145,7 @@ const BurgerConstructor: FC = () => {
             </section>
           ))
         ) : (
-          <div className={styles.topBun}>Выберите булку</div>
+          <div data-test-id="constructor-bun" className={styles.topBun}>Выберите булку</div>
         )}
 
         {ingredientSelect.length > 0 ? (
@@ -157,7 +157,7 @@ const BurgerConstructor: FC = () => {
                 dragItem={dragItem}
                 item={ingredient}
               >
-                <div className={styles.ingredientInside}>
+                <div data-test-id="ingredient-check" className={styles.ingredientInside}>
                   {ingredient.isLocked ? <DragIcon type="primary" /> : null}
                   <ConstructorElement
                     text={ingredient.name}
@@ -172,12 +172,12 @@ const BurgerConstructor: FC = () => {
             ))}
           </section>
         ) : (
-          <div className={styles.choiceIngredients}>Выберите ингредиенты</div>
+          <div data-test-id="constructor-items" className={styles.choiceIngredients}>Выберите ингредиенты</div>
         )}
 
         {bunSelect.length > 0 ? (
           bunSelect.map((ingredient) => (
-            <section key={ingredient.dateValue} className={styles.ingredient}>
+            <section data-test-id="bottombun-check" key={ingredient.dateValue} className={styles.ingredient}>
               <div className={styles.ingredientIconWrapper}>
                 <ConstructorElement
                   isLocked
@@ -201,7 +201,7 @@ const BurgerConstructor: FC = () => {
           <span className={styles.price}>{AllPrice}</span>
           <CurrencyIcon type="primary" />
         </p>
-        <div className={styles.button}>
+        <div data-testid="order-button" className={styles.button}>
           <Button
             disabled={!(ingredients.length > 0 && bunSelect.length > 0)}
             onClick={setOrder}
@@ -215,7 +215,7 @@ const BurgerConstructor: FC = () => {
       </section>
 
       {openModal && (
-        <Modal onClose={clickCloseModal}>
+        <Modal  onClose={clickCloseModal}>
           <OrderDetails orderId={Number(orderNumber)} status={orderStatus} />
         </Modal>
       )}

@@ -51,7 +51,7 @@ const [selectedIngredient, setSelectedIngredient] = useState<TIngredientProps | 
 
   if (modalIngredient) {
     return (
-      <div className={styles.header}>
+      <div data-testid="ingredient-details" className={styles.header} >
         <div className={styles.title}>Детали ингредиента</div>
         <div className={styles.parametres}>
           <div className={styles.image}>

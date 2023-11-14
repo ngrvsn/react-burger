@@ -54,6 +54,7 @@ export const LoginPage: FC = () => {
           name={'email'}
           placeholder="email"
           disabled={loginStart}
+          data-testid="login"
         />
         <Input
           onChange={inputPassword}
@@ -62,12 +63,14 @@ export const LoginPage: FC = () => {
           type={'text'}
           placeholder="Пароль"
           disabled={loginStart}
+          data-testid="password"
         />
         <Button
           disabled={isButtonDisabled || loginStart} 
           htmlType="submit"
           type="primary"
           extraClass="mt-6 mb-6"
+          data-testid="submit"
         >
           Войти
         </Button>

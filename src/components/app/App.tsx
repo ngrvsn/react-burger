@@ -38,11 +38,7 @@ useEffect(() => {
 }, []);
 /* eslint-enable react-hooks/exhaustive-deps */
 
-/* eslint-disable react-hooks/exhaustive-deps */
-useEffect(() => {
-  getUser(dispatch);
-}, []);
-/* eslint-enable react-hooks/exhaustive-deps */
+
 
 
 

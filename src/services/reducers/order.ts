@@ -25,17 +25,17 @@ export const orderReducer = (state = initialState, action: TOrderAction) => {
       case GET_ORDER_SUCCESS: {
           return {
               ...state,
-              orderFailed: false,
               order: action.payload,
               orderRequest: false,
+              orderFailed: false,
           };
       }
       case GET_ORDER_FAILED: {
           return {
               ...state,
-              orderFailed: true,
               order: null,
               orderRequest: false,
+              orderFailed: true,
           };
       }
 

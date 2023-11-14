@@ -1,9 +1,8 @@
-
 .section {
     font-family: 'JetBrains Mono';
     margin-left: 200px;
-    
-    
+
+
 }
 
 .allInfo {
@@ -11,7 +10,7 @@
     flex-direction: row;
     flex-wrap: nowrap; 
     justify-content: space-between;
-    
+
 }
 
 
@@ -21,7 +20,7 @@ font-size: 40px;
 font-weight: 300;
 line-height: 24px;
 letter-spacing: 0em;
-max-width: 200px; 
+max-width: 150px; 
 display: inline-block;
 grid-template-columns: repeat(10, auto);
 font-family: 'Iceland';
@@ -36,7 +35,7 @@ font-family: 'Iceland';
 font-weight: 300;
 line-height: 24px;
 letter-spacing: 0em;
-max-width: 200px; 
+max-width: 150px; 
 display: inline-block;
 grid-template-columns: repeat(10, auto);
 font-family: 'Iceland';
