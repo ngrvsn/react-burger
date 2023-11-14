@@ -1,0 +1,119 @@
+.main{
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    height: 100%;
+    justify-content: center;
+    font-family: 'Iceland';
+    width: 500px; 
+    max-width: 800px; 
+    max-height: 1000px; 
+    margin: 0 auto; 
+    padding-top: 20px;
+    
+}
+
+.div{
+    justify-content: flex-start;
+}
+
+.header{
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+}
+
+.text{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: flex-start;
+    
+}
+
+
+.scroller{
+    width: 100%;
+    align-items: center;
+    max-height: 320px;
+    overflow: auto;
+}
+
+
+.ingredientWarpper{
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+
+}
+
+.ingredient{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+
+.image img {
+    position: relative;
+    overflow: hidden;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+            border: 3px solid #372c6c;
+
+    box-sizing: border-box;
+    
+    
+    
+}
+
+.image {
+width: 70px;
+    
+}
+
+.price {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    justify-content: flex-end;
+
+
+}
+.primaryFeed{
+    margin-left: 10px;
+    float: right;
+    display: flex;
+
+
+}
+
+.ingredientsPrice {
+    float: right;
+    padding-right: 5px;
+    font-size: 36px;
+    margin-bottom: 5px;
+    margin-top: 35px;
+}
+
+.time {
+   margin-top: 50px;
+}
+
+.state {
+    color: #228d94;
+}
+
+.bottom {
+    display: flex;
+   justify-content:space-between;
+}
+.currency{
+    float: right;
+    padding-left: 8px;
+    padding-top: 10px;
+    margin-top: 30px;
+}
+

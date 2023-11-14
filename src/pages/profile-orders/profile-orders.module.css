@@ -1,0 +1,14 @@
+.main{
+    display: flex;
+    font-family: 'JetBrains Mono';
+    
+  }
+  .buttons {
+    flex: 1; 
+  }
+  
+  .feed {
+
+    flex: 2; 
+    display: flex;
+  }
