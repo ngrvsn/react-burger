@@ -11,3 +11,32 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+@font-face {
+  font-family: 'Iceland';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: local('Iceland'), url('./fonts/Iceland.woff2') format('woff2'),
+    url('./fonts/Iceland.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: local('JetBrains Mono'),
+    url('./fonts/Jetbrainsmonoregular.woff2') format('woff2'),
+    url('./fonts/Jetbrainsmonoregular.woff') format('woff');
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: local('JetBrains Mono'),
+    url('./fonts/Jetbrainsmonobold.woff2') format('woff2'),
+    url('./fonts/Jetbrainsmonobold.woff') format('woff');
+}
