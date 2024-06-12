@@ -1,20 +1,18 @@
-import React, { useEffect, FC } from 'react';
-import ReactDOM from 'react-dom';
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import ModalOverlay from '../modal-overlay/ModalOverlay';
+import React, { useEffect, FC } from "react";
+import ReactDOM from "react-dom";
+import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import ModalOverlay from "../modal-overlay/ModalOverlay";
 
-import styles from './Modal.module.css';
+import styles from "./Modal.module.scss";
 
-const modalRoot = document.getElementById('modals');
+const modalRoot = document.getElementById("modals");
 
 interface ModalComponentProps {
   children: React.ReactNode;
 }
 
 const ModalComponent: FC<ModalComponentProps> = ({ children }) => (
-  <div className={styles.content}>
-    {children}
-  </div>
+  <div className={styles.content}>{children}</div>
 );
 
 interface ModalProps {
@@ -26,15 +24,15 @@ interface ModalProps {
 const Modal: FC<ModalProps> = ({ onClose, children, title }) => {
   useEffect(() => {
     const handleEscapeKey = (el: KeyboardEvent): void => {
-      if (el.key === 'Escape') {
+      if (el.key === "Escape") {
         onClose();
       }
     };
 
-    window.addEventListener('keydown', handleEscapeKey);
+    window.addEventListener("keydown", handleEscapeKey);
 
     return () => {
-      window.removeEventListener('keydown', handleEscapeKey);
+      window.removeEventListener("keydown", handleEscapeKey);
     };
   }, [onClose]);
 
@@ -43,8 +41,13 @@ const Modal: FC<ModalProps> = ({ onClose, children, title }) => {
       <div data-testid="modal" className={styles.modal}>
         <div className={styles.wrapper}>
           <div className={styles.title}>{title}</div>
-          <button className={styles.closeButton} type='button' onClick={onClose} data-testid="close-modal">
-            <CloseIcon  type='primary' />
+          <button
+            className={styles.closeButton}
+            type="button"
+            onClick={onClose}
+            data-testid="close-modal"
+          >
+            <CloseIcon type="primary" />
           </button>
         </div>
         <ModalComponent>{children}</ModalComponent>

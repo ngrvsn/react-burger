@@ -1,0 +1,15 @@
+.main {
+  display: flex;
+  box-sizing: border-box;
+  padding-top: 20px;
+  font-family: "JetBrains Mono";
+  justify-content: space-evenly;
+  @media screen and (max-width: 800px) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.inputs {
+  padding-top: 20px;
+}

@@ -1,17 +1,15 @@
-import React, { FC } from 'react';
-import Feed from './feed/feed';
-import FeedSection from './feed-section/feed-section';
-import styles from './feed-archive.module.css'
-
+import React, { FC } from "react";
+import Feed from "./feed/feed";
+import FeedSection from "./feed-section/feed-section";
+import styles from "./feed-archive.module.scss";
 
 const FeedArchive: FC = () => {
-
-    return (
-        <section className={styles.section}>
-            <Feed />
-            <FeedSection />
-        </section>
-    );
+  return (
+    <section className={styles.section}>
+      <Feed />
+      <FeedSection />
+    </section>
+  );
 };
 
-export {FeedArchive}
+export { FeedArchive };

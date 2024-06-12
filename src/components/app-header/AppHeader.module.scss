@@ -1,8 +1,7 @@
 .header {
   padding: 16px 0;
   background-color: #1245;
-  font-family: 'JetBrains Mono';
-  
+  font-family: "JetBrains Mono";
 }
 .container {
   display: flex;
@@ -14,14 +13,22 @@
   padding-right: 16px;
   gap: 50px;
 
-height: 56px;
-top: 16px;
-left: 320px;
+  max-height: 56px;
+  top: 16px;
+  left: 320px;
 
+  @media screen and (max-width: 800px) {
+    display: flex;
+    gap: 30px;
+  }
 }
 
 .logo {
   margin: 0 auto;
+
+  @media screen and (max-width: 800px) {
+    display: none;
+  }
 }
 
 .button {
@@ -33,11 +40,10 @@ left: 320px;
   color: #fff;
 }
 
-
 .buttonText {
   margin-left: 8px;
   text-decoration: none;
-  color: #8585AD;
+  color: #8585ad;
 }
 
 .buttonThree {
@@ -57,23 +63,24 @@ left: 320px;
   color: #fff;
 }
 
-.noActive{
-  color:#8585ad;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
+.noActive {
+  color: #8585ad;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
 }
 
+.profile {
+  font-family: "JetBrains Mono";
+  font-size: 16px;
+  text-decoration: none;
+  color: #8585ad;
+  display: inline-flex;
+  align-items: center;
+}
 
-
-.profile{
-
-font-family: 'JetBrains Mono';
-font-size: 16px;
-text-decoration: none;
-color: #8585AD;
-display: inline-flex;
-align-items: center;
-
-
+.linkText {
+  @media screen and (max-width: 400px) {
+    display: none;
+  }
 }

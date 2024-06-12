@@ -7,11 +7,22 @@
   left: 30%;
   max-width: 500px;
   padding: 60px;
-  background-color: #1C1C21;
-  border: 1px solid ;
+  background-color: #1c1c21;
+  border: 1px solid;
   border-radius: 40px;
   z-index: 12;
+  @media screen and (max-width: 1000px) {
+    margin: 0;
+    left: 20%;
+  }
 
+  @media screen and (max-width: 800px) {
+    padding: 15px;
+    margin: 0;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, 50%);
+  }
 }
 
 .closeButton {
@@ -24,5 +35,9 @@
   right: 0;
   margin-right: 45px;
   position: absolute;
-}
 
+  @media screen and (max-width: 1000px) {
+    margin-top: 4%;
+    margin-right: 7%;
+  }
+}

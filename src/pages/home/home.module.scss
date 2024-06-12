@@ -1,0 +1,27 @@
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 50px;
+  margin-left: 20px;
+}
+
+.title {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  margin: 0;
+}
+
+.main {
+  display: grid;
+  flex-grow: 1;
+  grid-template-columns: repeat(2, 1fr);
+  padding-top: 50px;
+  max-width: 1400px;
+  height: 12px;
+  margin: 0 auto;
+  @media screen and (max-width: 800px) {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+  }
+}

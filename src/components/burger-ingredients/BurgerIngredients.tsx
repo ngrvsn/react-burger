@@ -1,49 +1,61 @@
-import React, { useState, createRef, useEffect, RefObject, FC  } from 'react';
-import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import { getIngredients } from '../../services/actions/ingredients';
-import {  useSelector } from 'react-redux';
-import { Link, useLocation } from 'react-router-dom';
-import DraggableItem from './BurgerIngredientsDrag';
-import styles from './BurgerIngredients.module.css';
-import { TIngredientProps } from '../../utils/types';
-import { AppDispatch, RootState, useDispatch,  } from '../../utils/types';
-import { TIngredientsState } from '../../services/reducers/ingredients';
+import React, { useState, createRef, useEffect, RefObject, FC } from "react";
+import {
+  Tab,
+  CurrencyIcon,
+  Counter,
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import { getIngredients } from "../../services/actions/ingredients";
+import { useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import DraggableItem from "./BurgerIngredientsDrag";
+import styles from "./BurgerIngredients.module.scss";
+import { TIngredientProps } from "../../utils/types";
+import { AppDispatch, RootState, useDispatch } from "../../utils/types";
+import { TIngredientsState } from "../../services/reducers/ingredients";
 
 const BurgerIngredients: FC = () => {
   const location = useLocation();
   const dispatch: AppDispatch = useDispatch();
-  const ingredientList = useSelector((state: { [prop: string]: TIngredientsState }) => state.ingredients.ingredientList);
-  const ingredientListFailed = useSelector((state: { [prop: string]: TIngredientsState }) => state.ingredients.ingredientListFailed);
-  const ingredientListRequest = useSelector((state: { [prop: string]: TIngredientsState }) => state.ingredients.ingredientListRequest);
-  const burgerIngredientsList = useSelector((state: RootState) => state.burgerConstructor.burgerIngredientsList);
-
-
+  const ingredientList = useSelector(
+    (state: { [prop: string]: TIngredientsState }) =>
+      state.ingredients.ingredientList
+  );
+  const ingredientListFailed = useSelector(
+    (state: { [prop: string]: TIngredientsState }) =>
+      state.ingredients.ingredientListFailed
+  );
+  const ingredientListRequest = useSelector(
+    (state: { [prop: string]: TIngredientsState }) =>
+      state.ingredients.ingredientListRequest
+  );
+  const burgerIngredientsList = useSelector(
+    (state: RootState) => state.burgerConstructor.burgerIngredientsList
+  );
 
   const [currentTab, setCurrentTab] = useState("bun");
   const bunRef = createRef();
   const sauceRef = createRef();
   const mainRef = createRef();
-  const tabLabels = ['Булки', 'Соусы', 'Начинки'];
+  const tabLabels = ["Булки", "Соусы", "Начинки"];
 
   useEffect(() => {
     dispatch(getIngredients());
   }, [dispatch]);
 
-  const activeTab = (tab:string): void => {
+  const activeTab = (tab: string): void => {
     setCurrentTab(tab);
-  
+
     const element = document.querySelector(`[data-title="${tab}"]`);
     if (element) {
       element.scrollIntoView({
-        behavior: 'smooth',
-        inline: 'start',
+        behavior: "smooth",
+        inline: "start",
       });
     }
   };
- 
 
   useEffect(() => {
-    const tabs = document.querySelectorAll('.tab');
+    const tabs = document.querySelectorAll(".tab");
     const handleClick = (event: Event) => {
       const tab = event.currentTarget as HTMLElement;
       if (tab.textContent !== null) {
@@ -52,12 +64,12 @@ const BurgerIngredients: FC = () => {
     };
 
     tabs.forEach((tab) => {
-      tab.addEventListener('click', handleClick);
+      tab.addEventListener("click", handleClick);
     });
 
     return () => {
       tabs.forEach((tab) => {
-        tab.removeEventListener('click', handleClick);
+        tab.removeEventListener("click", handleClick);
       });
     };
   }, []);
@@ -71,11 +83,13 @@ const BurgerIngredients: FC = () => {
         });
       },
       {
-        root: document.querySelector('.custom-scroll') as Element,
+        root: document.querySelector(".custom-scroll") as Element,
         threshold: [0.1, 0.5, 1],
       }
     );
-    document.querySelectorAll('.custom-scroll > div').forEach((div: Element) => observ.observe(div));
+    document
+      .querySelectorAll(".custom-scroll > div")
+      .forEach((div: Element) => observ.observe(div));
   };
 
   useEffect(() => {
@@ -85,28 +99,26 @@ const BurgerIngredients: FC = () => {
   type TTabIngredient = {
     title: string;
     list: TIngredientProps[];
-  }
-  
+  };
+
   let tabsIngredientsSelect: TTabIngredient[] = [];
-  
+
   if (ingredientList) {
     tabsIngredientsSelect = tabLabels.map((label) => {
       const tabObj: TTabIngredient = {
         title: label,
         list: [],
       };
-      if (label === 'Булки') {
-        tabObj.list = ingredientList.filter((item) => item.type === 'bun');
-      } else if (label === 'Соусы') {
-        tabObj.list = ingredientList.filter((item) => item.type === 'sauce');
+      if (label === "Булки") {
+        tabObj.list = ingredientList.filter((item) => item.type === "bun");
+      } else if (label === "Соусы") {
+        tabObj.list = ingredientList.filter((item) => item.type === "sauce");
       } else {
-        tabObj.list = ingredientList.filter((item) => item.type === 'main');
+        tabObj.list = ingredientList.filter((item) => item.type === "main");
       }
       return tabObj;
     });
   }
-
-
 
   return (
     <section className={styles.sectionWrap}>
@@ -115,7 +127,6 @@ const BurgerIngredients: FC = () => {
         <div className={styles.tabs} data-test-id="ingredients-menu">
           {tabLabels.map((label, index) => (
             <Tab
-            
               key={index}
               value={label}
               active={currentTab === label.toLowerCase()}
@@ -132,36 +143,61 @@ const BurgerIngredients: FC = () => {
       ) : ingredientListFailed ? (
         <p className={styles.paragraph}>Ошибка получения данных</p>
       ) : (
-        <section onScroll={onScrollActiveTab} className={`${styles.scroller} custom-scroll`} data-test-id="ingredients">
+        <section
+          onScroll={onScrollActiveTab}
+          className={`${styles.scroller} custom-scroll`}
+          data-test-id="ingredients"
+        >
           {tabsIngredientsSelect.map((tab, index) => (
-            <section key={index} ref={(index === 0 ? bunRef : index === 1 ? sauceRef : mainRef) as RefObject<HTMLElement>} className={styles.ingredientsWrapper} data-title={tab.title}>
+            <section
+              key={index}
+              ref={
+                (index === 0
+                  ? bunRef
+                  : index === 1
+                  ? sauceRef
+                  : mainRef) as RefObject<HTMLElement>
+              }
+              className={styles.ingredientsWrapper}
+              data-title={tab.title}
+            >
               <p className={styles.tabTitle}>{tab.title}</p>
 
-              {tab.list.map(ingredient => (
+              {tab.list.map((ingredient) => (
                 <DraggableItem
                   key={ingredient._id}
-
                   item={ingredient}
-
                   className={styles.ingredient}
                 >
                   <Link
-                  data-test-id="ingredients"
+                    data-test-id="ingredients"
                     className={styles.link}
                     to={`/ingredients/${ingredient._id}`}
                     state={{ backgroundLocation: location }}
                   >
                     <div className={styles.counterWrapper}>
-                    {burgerIngredientsList.filter(item => item._id === ingredient._id).length > 0 && (
-          <Counter count={burgerIngredientsList.filter(item => item._id === ingredient._id).length} size="default" extraClass="m-1" />
-        )}
+                      {burgerIngredientsList.filter(
+                        (item) => item._id === ingredient._id
+                      ).length > 0 && (
+                        <Counter
+                          count={
+                            burgerIngredientsList.filter(
+                              (item) => item._id === ingredient._id
+                            ).length
+                          }
+                          size="default"
+                          extraClass="m-1"
+                        />
+                      )}
                     </div>
                     <img src={ingredient.image} alt={ingredient.name} />
                     <p className={styles.ingredientDetail}>
                       <span className={styles.price}>{ingredient.price}</span>
                       <CurrencyIcon type="primary" />
                     </p>
-                    <div className={styles.ingredientName}>{ingredient.name}</div>
+                    <div className={styles.ingredientName}>
+                      {ingredient.name}
+                    </div>
                   </Link>
                 </DraggableItem>
               ))}
@@ -169,10 +205,8 @@ const BurgerIngredients: FC = () => {
           ))}
         </section>
       )}
-
-   
     </section>
   );
-}
+};
 
 export default BurgerIngredients;

@@ -1,47 +1,60 @@
-
-  
-  .details {
+.details {
   text-align: center;
   width: 100%;
   display: flex;
   align-items: center;
-  
-  }
-  
-  .wrapper {
+}
+
+.wrapper {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
   text-align: center;
-  
-  }
-
+}
 
 .column {
-  font-family: 'Iceland';
+  font-family: "Iceland";
   font-style: normal;
   font-weight: 400;
   margin-right: 20px;
   line-height: 16px;
-  color: #8585AD;
-  
+  color: #8585ad;
 }
 
 .name {
   margin-bottom: 20px;
   text-align: center;
-  font-family: 'Iceland';
+  font-family: "Iceland";
   font-style: normal;
   font-weight: 400;
   font-size: 24px;
+  @media screen and (max-width: 800px) {
+    font-size: 18px;
+  }
 }
 
 .title {
-  font-family: 'Iceland';
+  font-family: "Iceland";
   font-size: 36px;
   font-weight: 700;
   text-align: center;
   margin-top: 20px;
-  
+  @media screen and (max-width: 800px) {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .image {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+    }
+  }
 }

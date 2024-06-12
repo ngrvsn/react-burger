@@ -1,59 +1,61 @@
-import React, { useState, useMemo, FC } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useDrop } from 'react-dnd';
+import React, { useState, useMemo, FC } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDrop } from "react-dnd";
 import {
   DragIcon,
   CurrencyIcon,
   Button,
   ConstructorElement,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from '../modal/Modal';
-import OrderDetails from '../order-details/OrderDetails';
-import DraggableItem from './BurgerConstructorDrag';
-import { getCookie } from '../../services/cookies';
-import { cancelOrder } from '../../services/actions/order';
-import { setBurgerIngredientsList } from '../../services/actions/ingredient-list';
-import { createOrderWithTokenRefresh } from '../../services/authoris-api';
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import Modal from "../modal/Modal";
+import OrderDetails from "../order-details/OrderDetails";
+import DraggableItem from "./BurgerConstructorDrag";
+import { getCookie } from "../../services/cookies";
+import { cancelOrder } from "../../services/actions/order";
+import { setBurgerIngredientsList } from "../../services/actions/ingredient-list";
+import { createOrderWithTokenRefresh } from "../../services/authoris-api";
 import {
   TBurgerIngredient,
   TIngredientProps,
   RootState,
   useDispatch,
   useSelector,
-} from '../../utils/types';
+} from "../../utils/types";
 
-import styles from './BurgerConstructor.module.css';
+import styles from "./BurgerConstructor.module.scss";
 
 const BurgerConstructor: FC = () => {
   const dispatch: Function = useDispatch();
   const navigate = useNavigate();
-  const ingredients = useSelector((state: RootState) => state.burgerConstructor.burgerIngredientsList);
+  const ingredients = useSelector(
+    (state: RootState) => state.burgerConstructor.burgerIngredientsList
+  );
   const [openModal, setOpenModal] = useState(false);
   const [orderNumber, saveOrderNumber] = useState<number | null>(null);
   const [orderStatus, setOrderStatus] = useState<string | null>(null);
 
   const setOrder = async () => {
     setOpenModal(true);
-    const token = getCookie('token');
+    const token = getCookie("token");
 
-    if (token && localStorage.getItem('refreshToken')) {
+    if (token && localStorage.getItem("refreshToken")) {
       const ingredientIds: string[] = ingredients.map((item) => item._id);
 
-      const orderResponse = await createOrderWithTokenRefresh(ingredientIds, token);
+      const orderResponse = await createOrderWithTokenRefresh(
+        ingredientIds,
+        token
+      );
 
       if (orderResponse.success) {
         saveOrderNumber(orderResponse.orderNumber || null);
         setOrderStatus(orderResponse.orderStatus || null);
       } else {
-        console.error(orderResponse.errorMessage || 'ошибка');
+        console.error(orderResponse.errorMessage || "ошибка");
       }
     } else {
-      navigate('/login');
+      navigate("/login");
     }
   };
-
-  
-
 
   const clickCloseModal = () => {
     setOpenModal(false);
@@ -64,15 +66,15 @@ const BurgerConstructor: FC = () => {
 
   const { bunSelect, ingredientSelect } = useMemo(() => {
     return {
-      bunSelect: ingredients.filter((item) => item.type === 'bun'),
-      ingredientSelect: ingredients.filter((item) => item.type !== 'bun'),
+      bunSelect: ingredients.filter((item) => item.type === "bun"),
+      ingredientSelect: ingredients.filter((item) => item.type !== "bun"),
     };
   }, [ingredients]);
 
   const AllPrice = useMemo(
     () =>
       ingredients.reduce(
-        (acc, item) => acc + item.price * (item.type === 'bun' ? 2 : 1),
+        (acc, item) => acc + item.price * (item.type === "bun" ? 2 : 1),
         0
       ),
     [ingredients]
@@ -80,7 +82,7 @@ const BurgerConstructor: FC = () => {
 
   const handleDrop = (item: any) => {
     let useItem = { ...item, dateValue: Date.now() };
-    if (item.type === 'bun' && bunSelect.length > 0) {
+    if (item.type === "bun" && bunSelect.length > 0) {
       dispatch(setBurgerIngredientsList([...ingredientSelect, useItem]));
     } else {
       dispatch(setBurgerIngredientsList([...ingredients, useItem]));
@@ -88,7 +90,7 @@ const BurgerConstructor: FC = () => {
   };
 
   const [{ isHover }, dropItem] = useDrop({
-    accept: ['bun', 'sauce', 'main'],
+    accept: ["bun", "sauce", "main"],
     drop(item) {
       handleDrop(item);
     },
@@ -122,7 +124,7 @@ const BurgerConstructor: FC = () => {
     dispatch(setBurgerIngredientsList(choiceIngredients));
   };
 
-  const border = isHover ? '2px solid' : 'none';
+  const border = isHover ? "2px solid" : "none";
 
   return (
     <section className={styles.section} style={{ border }} ref={dropItem}>
@@ -130,13 +132,16 @@ const BurgerConstructor: FC = () => {
         {bunSelect.length > 0 ? (
           bunSelect.map((ingredient: TIngredientProps) => (
             <section key={ingredient.dateValue} className={styles.ingredient}>
-              <div data-test-id="topbun-check" className={styles.ingredientIconWrapper}>
+              <div
+                data-test-id="topbun-check"
+                className={styles.ingredientIconWrapper}
+              >
                 {ingredient.isLocked ? <DragIcon type="primary" /> : null}
                 <ConstructorElement
                   isLocked
                   text={ingredient.name}
                   price={ingredient.price}
-                  thumbnail={ingredient.image || ''}
+                  thumbnail={ingredient.image || ""}
                   handleClose={() => {
                     deleteIngredient(ingredient);
                   }}
@@ -145,7 +150,9 @@ const BurgerConstructor: FC = () => {
             </section>
           ))
         ) : (
-          <div data-test-id="constructor-bun" className={styles.topBun}>Выберите булку</div>
+          <div data-test-id="constructor-bun" className={styles.topBun}>
+            Выберите булку
+          </div>
         )}
 
         {ingredientSelect.length > 0 ? (
@@ -157,12 +164,15 @@ const BurgerConstructor: FC = () => {
                 dragItem={dragItem}
                 item={ingredient}
               >
-                <div data-test-id="ingredient-check" className={styles.ingredientInside}>
+                <div
+                  data-test-id="ingredient-check"
+                  className={styles.ingredientInside}
+                >
                   {ingredient.isLocked ? <DragIcon type="primary" /> : null}
                   <ConstructorElement
                     text={ingredient.name}
                     price={ingredient.price}
-                    thumbnail={ingredient.image || ''}
+                    thumbnail={ingredient.image || ""}
                     handleClose={() => {
                       deleteIngredient(ingredient);
                     }}
@@ -172,18 +182,27 @@ const BurgerConstructor: FC = () => {
             ))}
           </section>
         ) : (
-          <div data-test-id="constructor-items" className={styles.choiceIngredients}>Выберите ингредиенты</div>
+          <div
+            data-test-id="constructor-items"
+            className={styles.choiceIngredients}
+          >
+            Выберите ингредиенты
+          </div>
         )}
 
         {bunSelect.length > 0 ? (
           bunSelect.map((ingredient) => (
-            <section data-test-id="bottombun-check" key={ingredient.dateValue} className={styles.ingredient}>
+            <section
+              data-test-id="bottombun-check"
+              key={ingredient.dateValue}
+              className={styles.ingredient}
+            >
               <div className={styles.ingredientIconWrapper}>
                 <ConstructorElement
                   isLocked
                   text={ingredient.name}
                   price={ingredient.price}
-                  thumbnail={ingredient.image || ''}
+                  thumbnail={ingredient.image || ""}
                   handleClose={() => {
                     deleteIngredient(ingredient);
                   }}
@@ -215,7 +234,7 @@ const BurgerConstructor: FC = () => {
       </section>
 
       {openModal && (
-        <Modal  onClose={clickCloseModal}>
+        <Modal onClose={clickCloseModal}>
           <OrderDetails orderId={Number(orderNumber)} status={orderStatus} />
         </Modal>
       )}

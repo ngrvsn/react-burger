@@ -1,16 +1,15 @@
-import { FC } from 'react';
-import { NavLink, Outlet, } from 'react-router-dom';
+import { FC } from "react";
+import { NavLink, Outlet } from "react-router-dom";
 import {
   Logo,
   BurgerIcon,
   ListIcon,
   ProfileIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
+} from "@ya.praktikum/react-developer-burger-ui-components";
 
-import styles from './AppHeader.module.css';
+import styles from "./AppHeader.module.scss";
 
 const AppHeader: FC = () => {
-
   const setActiveLink = ({ isActive }: { isActive: boolean }) => {
     if (isActive) {
       return styles.active;
@@ -23,13 +22,13 @@ const AppHeader: FC = () => {
     <div>
       <header className={styles.header}>
         <div className={styles.container}>
-          <NavLink to='/' className={setActiveLink}>
-            <BurgerIcon type='primary' />
+          <NavLink to="/" className={setActiveLink}>
+            <BurgerIcon type="primary" />
             <span className={styles.linkText}>Конструктор</span>
           </NavLink>
 
-          <NavLink to='/feed' className={setActiveLink}>
-            <ListIcon type='secondary' />
+          <NavLink to="/feed" className={setActiveLink}>
+            <ListIcon type="secondary" />
             <span className={styles.linkText}>Лента заказов</span>
           </NavLink>
 
@@ -37,10 +36,11 @@ const AppHeader: FC = () => {
             <Logo />
           </div>
 
-          <NavLink to='/profile' className={setActiveLink}>
-          <div className={styles.profile}><ProfileIcon type='primary' />
-            
-            Личный кабинет</div>
+          <NavLink to="/profile" className={setActiveLink}>
+            <div className={styles.profile}>
+              <ProfileIcon type="primary" />
+              <div className={styles.linkText}>Личный кабинет</div>
+            </div>
           </NavLink>
         </div>
       </header>

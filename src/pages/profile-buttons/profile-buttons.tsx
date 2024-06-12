@@ -1,22 +1,22 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import { useNavigate, useMatch } from "react-router-dom";
-import { useDispatch } from '../../utils/types';
-import { signOut } from '../../services/actions/users';
-import { FC, FormEvent } from 'react';
+import { useDispatch } from "../../utils/types";
+import { signOut } from "../../services/actions/users";
+import { FC, FormEvent } from "react";
 
-import styles from './profile-buttons.module.css';
+import styles from "./profile-buttons.module.scss";
 
 const ProfileButtons: FC = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const unlogin = async (el: FormEvent) => {
     el.preventDefault();
-    const success = await signOut(dispatch); 
+    const success = await signOut(dispatch);
     if (success) {
-      navigate('/login', { replace: true });
+      navigate("/login", { replace: true });
     }
-  }
+  };
 
   const navLinkActiveStyle = `${styles.navLink} ${styles.navLinkActive}`;
   const navLinkInactiveStyle = `${styles.navLink} ${styles.navLinkInactive}`;
@@ -28,7 +28,9 @@ const ProfileButtons: FC = () => {
           <NavLink
             to={{ pathname: `/profile` }}
             end
-            className={({ isActive }) => isActive ? navLinkActiveStyle : navLinkInactiveStyle}
+            className={({ isActive }) =>
+              isActive ? navLinkActiveStyle : navLinkInactiveStyle
+            }
           >
             Профиль
           </NavLink>
@@ -37,24 +39,26 @@ const ProfileButtons: FC = () => {
           <NavLink
             to={{ pathname: `/profile/orders` }}
             end
-            className={({ isActive }) => isActive ? navLinkActiveStyle : navLinkInactiveStyle}
+            className={({ isActive }) =>
+              isActive ? navLinkActiveStyle : navLinkInactiveStyle
+            }
           >
             История заказов
           </NavLink>
         </div>
         <div className={styles.buttons}>
-          <a href={"/"}
-            className={navLinkInactiveStyle}
-            onClick={unlogin}
-          >
+          <a href={"/"} className={navLinkInactiveStyle} onClick={unlogin}>
             Выход
           </a>
         </div>
       </div>
-  
-  
+
       <div className={styles.text}>
-        {useMatch('/profile') ? <>В этом разделе вы можете изменить <br /> свои персональные данные</> : null}
+        {useMatch("/profile") ? (
+          <>
+            В этом разделе вы можете изменить <br /> свои персональные данные
+          </>
+        ) : null}
       </div>
     </section>
   );

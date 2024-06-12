@@ -1,0 +1,15 @@
+.main {
+  display: flex;
+  font-family: "JetBrains Mono";
+  justify-content: space-evenly;
+  @media screen and (max-width: 800px) {
+    display: flex;
+    flex-direction: column;
+  }
+}
+.buttons {
+}
+
+.feed {
+  display: flex;
+}
