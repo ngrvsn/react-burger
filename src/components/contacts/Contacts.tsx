@@ -1,8 +1,13 @@
-import TelegramIcon from "./TelegramIcon.svg";
+import React from "react";
+import TelegramIcon from "../../images/TelegramIcon.svg";
 
-import styles from "./Contscts.module.scss";
+import styles from "./Contacts.module.scss";
 
 export function Contacts(): JSX.Element {
+  const openPdfInNewTab = () => {
+    window.open("./lorem-ipsum.pdf", "_blank");
+  };
+
   return (
     <main className={styles.main}>
       <div className={styles.contactsRow}>
@@ -27,6 +32,9 @@ export function Contacts(): JSX.Element {
         >
           <img src={TelegramIcon} alt="telegram" className={styles.imageSize} />
           <span className={styles.supportLinkText}>Техническая поддержка</span>
+        </a>
+        <a onClick={openPdfInNewTab} className={styles.button}>
+          Пользовательское соглашение
         </a>
       </div>
     </main>

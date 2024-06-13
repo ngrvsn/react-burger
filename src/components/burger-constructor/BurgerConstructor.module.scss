@@ -3,7 +3,7 @@
   flex-direction: column;
   margin-top: 100px;
   margin-left: 40px;
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 1100px) {
     margin-left: 0;
   }
 }
@@ -20,7 +20,7 @@
 .bottom {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-end;
   margin-top: 40px;
 
@@ -33,7 +33,7 @@
 .price {
   font-weight: 400;
   font-size: 50px;
-  margin-left: 300px;
+
   @media screen and (max-width: 800px) {
     display: flex;
     margin: auto;
@@ -43,7 +43,7 @@
 .button {
   font-weight: 400;
   font-size: 50px;
-  margin-left: 270px;
+
   @media screen and (max-width: 800px) {
     display: flex;
     margin: auto;
