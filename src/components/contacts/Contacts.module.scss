@@ -11,23 +11,30 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-
   justify-content: space-around;
   margin: 0 auto;
   padding-left: 16px;
   padding-right: 16px;
-  gap: 100px;
-
+  gap: 50px;
   width: 100%;
 
-  @media screen and (max-width: 800px) {
-    gap: 30px;
-  }
   @media screen and (max-width: 1100px) {
-    display: flex;
+    gap: 30px;
     flex-direction: column;
-    align-content: center;
   }
+}
+
+.contactsRow > * {
+  flex: 1 1 30%;
+}
+
+.lastElements {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.first {
+  display: flex;
 }
 
 .imageSize {
@@ -60,7 +67,27 @@
 
 .button:hover,
 .contactsText:hover,
-.supportLinkText:hover {
+.supportLinkText:hover,
+.closeButton:hover {
   cursor: pointer;
   text-decoration: underline;
+}
+
+.modal {
+  z-index: 1000;
+  display: flex;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.closeButton {
+  display: flex;
+  background-color: #000000;
 }

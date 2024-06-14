@@ -1,0 +1,109 @@
+.main {
+  max-width: 376px;
+  max-height: 411px;
+  padding: 15px;
+  border-radius: 15px;
+
+  gap: 19px;
+
+  display: flex;
+  flex-direction: column;
+  @media screen and (max-width: 1100px) {
+    max-width: 100%;
+  }
+}
+
+.header {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 23.28px;
+  margin: 0 auto;
+  text-align: left;
+
+  @media screen and (max-width: 1220px) {
+    width: 100%;
+  }
+
+  @media screen and (max-width: 960px) {
+    max-width: 660px;
+    display: flex;
+    margin: 0 auto;
+  }
+
+  @media screen and (max-width: 428px) {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 20px;
+    text-align: center;
+  }
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
+}
+.input,
+.descriptionProblem {
+  padding: 8px 17px 7px 13px;
+  border-radius: 9px;
+  border: 1px solid #1245;
+  font-family: "JetBrains Mono";
+  font-size: 16px;
+  font-weight: 500;
+  background-color: #c7c7eb;
+  line-height: 24px;
+  text-align: left;
+
+  @media screen and (max-width: 960px) {
+    max-width: 90%;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.descriptionProblem {
+  height: 85px;
+  resize: none;
+}
+
+.button {
+  height: 48px;
+  max-width: 316px;
+  min-width: 200px;
+  background-color: #8585ad;
+  border-radius: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+
+  &:hover {
+    background-color: #7b7bdd;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  @media screen and (max-width: 960px) {
+    max-width: 100%;
+
+    display: flex;
+  }
+}
+
+.buttonText {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+}
+
+.messageRequest {
+  font-size: 12px;
+  margin: auto;
+}

@@ -12,13 +12,12 @@ import { ResetPasswordPage } from "../../pages/reset-password/reset-password";
 import { NotFoundPage } from "../../pages/not-found/not-found";
 import { FeedArchive } from "../feed-archive/feed-archive";
 import { FeedInfo } from "../feed-archive/feed-info/feed-info";
+import { ConnectUs } from "../connect-us/ConnectUs";
 import { ProtectedRouteElement } from "../protected-route/protected-route";
 import Modal from "../modal/Modal";
 import { FC, useEffect } from "react";
 import { getIngredients } from "../../services/actions/ingredients";
 import { AppDispatch, useDispatch } from "../../utils/types";
-import { getUser } from "../../services/actions/users";
-import { Contacts } from "../contacts/Contacts";
 import FeedInfoPage from "../feed-archive/feed-info/feed-info-page";
 
 import styles from "./App.module.css";
@@ -88,6 +87,12 @@ const App: FC = () => {
               element={<ProfileOrdersPage />}
               noNeedAuth={false}
             />
+          }
+        />
+        <Route
+          path="/profile/connectus"
+          element={
+            <ProtectedRouteElement element={<ConnectUs />} noNeedAuth={false} />
           }
         />
         <Route

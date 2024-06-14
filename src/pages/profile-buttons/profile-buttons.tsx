@@ -52,6 +52,17 @@ const ProfileButtons: FC = () => {
           </a>
         </div>
       </div>
+      <div className={styles.buttons}>
+        <NavLink
+          to={{ pathname: `/profile/connectus` }}
+          end
+          className={({ isActive }) =>
+            isActive ? navLinkActiveStyle : navLinkInactiveStyle
+          }
+        >
+          Напишите нам
+        </NavLink>
+      </div>
 
       <div className={styles.text}>
         {useMatch("/profile") ? (
