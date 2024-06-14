@@ -31,6 +31,13 @@
   }
 }
 
+.logoSmall {
+  display: none;
+  @media screen and (max-width: 800px) {
+    display: flex;
+  }
+}
+
 .button {
   display: inline-flex;
   align-items: center;

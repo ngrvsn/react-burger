@@ -19,6 +19,7 @@ import { FC, useEffect } from "react";
 import { getIngredients } from "../../services/actions/ingredients";
 import { AppDispatch, useDispatch } from "../../utils/types";
 import FeedInfoPage from "../feed-archive/feed-info/feed-info-page";
+import { YMInitializer } from "react-yandex-metrika";
 
 import styles from "./App.module.css";
 
@@ -36,6 +37,7 @@ const App: FC = () => {
 
   return (
     <div className={styles.app}>
+      <YMInitializer accounts={[97575658]} options={{ webvisor: true }} />
       <AppHeader />
       <Routes location={state?.backgroundLocation || location}>
         <Route

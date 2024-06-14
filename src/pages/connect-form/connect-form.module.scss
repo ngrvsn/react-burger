@@ -64,6 +64,13 @@
   }
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: var(--background-element) inset !important;
+}
+
 .descriptionProblem {
   height: 85px;
   resize: none;

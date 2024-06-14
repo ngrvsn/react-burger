@@ -6,6 +6,7 @@ import {
   ListIcon,
   ProfileIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
+import { ReactComponent as LogoSmall } from "../../images/smalllogo.svg";
 
 import styles from "./AppHeader.module.scss";
 
@@ -31,10 +32,15 @@ const AppHeader: FC = () => {
             <ListIcon type="secondary" />
             <span className={styles.linkText}>Лента заказов</span>
           </NavLink>
+          <NavLink to="/">
+            <div className={styles.logo}>
+              <Logo />
+            </div>
 
-          <div className={styles.logo}>
-            <Logo />
-          </div>
+            <div className={styles.logoSmall}>
+              <LogoSmall />
+            </div>
+          </NavLink>
 
           <NavLink to="/profile" className={setActiveLink}>
             <div className={styles.profile}>

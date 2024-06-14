@@ -1,6 +1,5 @@
-"use client";
-
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import axios from "axios";
 import styles from "./connect-form.module.scss";
 
 interface IFormState {
@@ -40,18 +39,21 @@ export const ConnectForm: React.FC = () => {
       return;
     }
 
-    const response = await fetch("/awahawjnawejawhawh", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formState),
-    });
+    try {
+      const response = await axios.post("/awahawjnawejawhawh", formState, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    if (response.ok) {
-      setMessage("Ваш вопрос отправлен");
-      setFormState(initialFormState);
-    } else {
+      if (response.status === 200) {
+        setMessage("Ваш вопрос отправлен");
+        setFormState(initialFormState);
+      } else {
+        setMessage("Ошибка отправки вопроса");
+      }
+    } catch (error) {
+      console.error("Ошибка при отправке запроса:", error);
       setMessage("Ошибка отправки вопроса");
     }
   };
