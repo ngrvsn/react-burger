@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "./static/css/main.c281c55a.css",
-    "main.js": "./static/js/main.b5b0e98e.js",
+    "main.css": "./static/css/main.83044335.css",
+    "main.js": "./static/js/main.b15a81c5.js",
     "static/js/988.69a4dc65.chunk.js": "./static/js/988.69a4dc65.chunk.js",
     "static/media/page not found.png": "./static/media/page not found.5c8817ef31f943b76f61.png",
     "static/media/JetBrainsMono-Bold.woff": "./static/media/JetBrainsMono-Bold.3914674f1cb2335acf26.woff",
@@ -16,15 +16,16 @@
     "static/media/iceland.woff": "./static/media/iceland.77ad7fc2baffd9305538.woff",
     "static/media/Iceland.woff": "./static/media/Iceland.3580a0ae44cd63d608dc.woff",
     "static/media/iceland.woff2": "./static/media/iceland.4ae67a017a5ff82bbbb7.woff2",
+    "static/media/smalllogo.svg": "./static/media/smalllogo.9344d634408ed4d6fb07a2e2eecb2baf.svg",
     "static/media/Iceland.woff2": "./static/media/Iceland.d912e637466d2b1e37f3.woff2",
     "static/media/TelegramIcon.svg": "./static/media/TelegramIcon.df8ee53ecd2937a35b4a4a15caaf8254.svg",
     "index.html": "./index.html",
-    "main.c281c55a.css.map": "./static/css/main.c281c55a.css.map",
-    "main.b5b0e98e.js.map": "./static/js/main.b5b0e98e.js.map",
+    "main.83044335.css.map": "./static/css/main.83044335.css.map",
+    "main.b15a81c5.js.map": "./static/js/main.b15a81c5.js.map",
     "988.69a4dc65.chunk.js.map": "./static/js/988.69a4dc65.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c281c55a.css",
-    "static/js/main.b5b0e98e.js"
+    "static/css/main.83044335.css",
+    "static/js/main.b15a81c5.js"
   ]
 }
