@@ -1,8 +1,8 @@
 {
   "files": {
-    "main.css": "./static/css/main.5da8a7e0.css",
-    "main.js": "./static/js/main.14500ce4.js",
-    "static/js/988.876ca841.chunk.js": "./static/js/988.876ca841.chunk.js",
+    "main.css": "./static/css/main.c281c55a.css",
+    "main.js": "./static/js/main.b5b0e98e.js",
+    "static/js/988.69a4dc65.chunk.js": "./static/js/988.69a4dc65.chunk.js",
     "static/media/page not found.png": "./static/media/page not found.5c8817ef31f943b76f61.png",
     "static/media/JetBrainsMono-Bold.woff": "./static/media/JetBrainsMono-Bold.3914674f1cb2335acf26.woff",
     "static/media/JetBrainsMono-Regular.woff": "./static/media/JetBrainsMono-Regular.f52bee61d00ce995b89f.woff",
@@ -19,12 +19,12 @@
     "static/media/Iceland.woff2": "./static/media/Iceland.d912e637466d2b1e37f3.woff2",
     "static/media/TelegramIcon.svg": "./static/media/TelegramIcon.df8ee53ecd2937a35b4a4a15caaf8254.svg",
     "index.html": "./index.html",
-    "main.5da8a7e0.css.map": "./static/css/main.5da8a7e0.css.map",
-    "main.14500ce4.js.map": "./static/js/main.14500ce4.js.map",
-    "988.876ca841.chunk.js.map": "./static/js/988.876ca841.chunk.js.map"
+    "main.c281c55a.css.map": "./static/css/main.c281c55a.css.map",
+    "main.b5b0e98e.js.map": "./static/js/main.b5b0e98e.js.map",
+    "988.69a4dc65.chunk.js.map": "./static/js/988.69a4dc65.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.5da8a7e0.css",
-    "static/js/main.14500ce4.js"
+    "static/css/main.c281c55a.css",
+    "static/js/main.b5b0e98e.js"
   ]
 }
