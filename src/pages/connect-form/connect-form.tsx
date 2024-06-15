@@ -1,4 +1,5 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { Contacts } from "../../components/contacts/Contacts";
 import axios from "axios";
 import styles from "./connect-form.module.scss";
 
@@ -98,6 +99,9 @@ export const ConnectForm: React.FC = () => {
         </button>
         {message && <p className={styles.messageRequest}>{message}</p>}
       </form>
+      <div className={styles.contactBlock}>
+        <Contacts />
+      </div>
     </main>
   );
 };

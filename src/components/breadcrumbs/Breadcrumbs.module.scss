@@ -1,0 +1,21 @@
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  font-family: "JetBrains Mono";
+  gap: 10px;
+}
+
+.breadcrumb {
+  font-size: 14px;
+  color: #8585ad;
+  font-size: 16px;
+}
+
+.link {
+  text-decoration: none;
+  color: #ffffff;
+  &:hover {
+    text-decoration: underline;
+  }
+}

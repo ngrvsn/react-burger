@@ -3,6 +3,7 @@ import { useNavigate, useMatch } from "react-router-dom";
 import { useDispatch } from "../../utils/types";
 import { signOut } from "../../services/actions/users";
 import { FC, FormEvent } from "react";
+import Breadcrumb from "../../components/breadcrumbs/Breadcrumbs";
 
 import styles from "./profile-buttons.module.scss";
 
@@ -23,6 +24,7 @@ const ProfileButtons: FC = () => {
 
   return (
     <section className={styles.wrapper}>
+      <Breadcrumb />
       <div>
         <div className={styles.buttons}>
           <NavLink
@@ -47,23 +49,23 @@ const ProfileButtons: FC = () => {
           </NavLink>
         </div>
         <div className={styles.buttons}>
+          <NavLink
+            to={{ pathname: `/profile/connectus` }}
+            end
+            className={({ isActive }) =>
+              isActive ? navLinkActiveStyle : navLinkInactiveStyle
+            }
+          >
+            Напишите нам
+          </NavLink>
+        </div>
+
+        <div className={styles.buttons}>
           <a href={"/"} className={navLinkInactiveStyle} onClick={unlogin}>
             Выход
           </a>
         </div>
       </div>
-      <div className={styles.buttons}>
-        <NavLink
-          to={{ pathname: `/profile/connectus` }}
-          end
-          className={({ isActive }) =>
-            isActive ? navLinkActiveStyle : navLinkInactiveStyle
-          }
-        >
-          Напишите нам
-        </NavLink>
-      </div>
-
       <div className={styles.text}>
         {useMatch("/profile") ? (
           <>
